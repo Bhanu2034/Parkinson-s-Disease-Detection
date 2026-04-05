@@ -1,0 +1,114 @@
+name: Python Code Quality & Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10', '3.11']
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install flake8 black pylint
+    
+    - name: Lint with flake8
+      run: |
+        # Stop build on syntax errors or undefined names
+        flake8 app.py scripts/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Warn on other issues
+        flake8 app.py scripts/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    
+    - name: Check code formatting with black
+      run: |
+        black --check app.py scripts/ || true
+    
+    - name: Verify app starts without errors
+      run: |
+        python -c "from app import app, model, scaler, FEATURE_NAMES; print('✓ App loads successfully')"
+    
+    - name: Verify models exist
+      run: |
+        python -c "
+        import os
+        import json
+        
+        models_dir = 'models'
+        assert os.path.exists(os.path.join(models_dir, 'parkinson_model.pkl')), 'Model file missing'
+        assert os.path.exists(os.path.join(models_dir, 'scaler.pkl')), 'Scaler missing'
+        assert os.path.exists(os.path.join(models_dir, 'feature_names.pkl')), 'Features missing'
+        
+        # Check model results JSON
+        with open(os.path.join(models_dir, 'model_results.json')) as f:
+            data = json.load(f)
+            assert isinstance(data, list), 'model_results.json should be an array'
+            assert len(data) > 0, 'No models in results'
+            assert all('Model' in item for item in data), 'Missing Model field'
+            print(f'✓ Model results valid: {len(data)} models found')
+        "
+
+  security-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Run security checks
+      run: |
+        pip install bandit
+        bandit -r app.py scripts/ -f json -o bandit-report.json || true
+        bandit -r app.py scripts/ -ll
+
+  build-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Check project structure
+      run: |
+        python -c "
+        import os
+        import json
+        
+        # Check required directories
+        required_dirs = ['templates', 'static', 'scripts', 'models', 'data']
+        for d in required_dirs:
+            assert os.path.isdir(d), f'Missing directory: {d}'
+            print(f'✓ {d}/ exists')
+        
+        # Check required files
+        required_files = ['app.py', 'requirements.txt', 'README.md']
+        for f in required_files:
+            assert os.path.isfile(f), f'Missing file: {f}'
+            print(f'✓ {f} exists')
+        
+        # Verify Python version in code
+        with open('app.py', 'r') as f:
+            content = f.read()
+            assert 'Flask' in content, 'Flask import required in app.py'
+            print('✓ app.py has Flask import')
+        "

@@ -1,0 +1,90 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.pydevproject
+.settings/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Data
+*.csv
+data/parkinsons.csv
+data/test_wavs/
+
+# Model files (too large to upload)
+*.pkl
+*.h5
+*.pt
+*.pth
+
+# Logs and temp files
+*.log
+*.txt
+temp/
+tmp/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cache
+*.cache
+.cache/
+
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.local
+
+# Test results
+test_output*.txt
+retrain_*.txt
+analysis_*.txt
+diag_*.txt
+_files.txt
+pkl_list.txt
+scripts/test_*.txt
+scripts/diag_*.txt
+
+# History
+data/history.json
