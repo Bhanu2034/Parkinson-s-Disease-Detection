@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Prediction History - ParkinsonAI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    body { background: #f0f4fb; }
+
+    /* ── Page Header (matches dashboard/analysis) ── */
+    .page-header {
+      background: linear-gradient(135deg,#072a44,#0d4f8a);
+      color:#fff; padding:32px 40px; margin-bottom:28px;
+      border-radius:0 0 20px 20px;
+    }
+    .page-header h1 { margin:0 0 6px; font-size:26px; font-weight:800; color:#ffffff; text-shadow:0 1px 4px rgba(0,0,0,.4); }
+    .page-header p  { margin:0; font-size:14px; color:#e8f4ff; }
+
+    /* ── History Container ── */
+    .history-container { max-width:900px; margin:0 auto; padding:0 20px 60px; }
+
+    /* ── Filter Tabs ── */
+    .filter-tabs { display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap; }
+    .filter-btn {
+      padding:9px 20px; border:2px solid #1e90ff; border-radius:22px;
+      background:#fff; color:#1e90ff; font-weight:600; font-size:13px;
+      cursor:pointer; transition:.2s;
+    }
+    .filter-btn.active, .filter-btn:hover { background:#1e90ff; color:#fff; }
+    .filter-btn .count-badge {
+      display:inline-block; background:rgba(255,255,255,.25); color:inherit;
+      font-size:11px; font-weight:700; padding:2px 8px; border-radius:12px; margin-left:6px;
+    }
+    .filter-btn.active .count-badge { background:rgba(255,255,255,.3); }
+
+    /* ── History Header ── */
+    .history-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:12px; }
+    .history-header h2 { margin:0; font-size:20px; font-weight:800; color:#0b3c5d; display:flex; align-items:center; gap:10px; }
+    .history-count { background:#e8f4ff; color:#1e90ff; font-size:13px; font-weight:700; padding:3px 11px; border-radius:20px; }
+
+    /* ── Clear button: override global button styles ── */
+    .clear-history-btn {
+      background:none !important; border:2px solid #dc3545 !important; color:#dc3545 !important;
+      padding:8px 18px !important; border-radius:10px !important; font-size:13px !important;
+      font-weight:700 !important; cursor:pointer !important;
+      box-shadow:none !important; transform:none !important;
+      transition: background .2s, color .2s !important;
+    }
+    .clear-history-btn:hover {
+      background:#dc3545 !important; color:#fff !important;
+      transform:none !important; box-shadow:none !important;
+    }
+
+    /* ── Empty State ── */
+    .history-empty { text-align:center; padding:60px 20px; color:#aaa; font-size:16px; background:#fff; border-radius:16px; box-shadow:0 2px 12px rgba(0,0,0,.06); }
+    .history-empty .empty-icon { font-size:56px; margin-bottom:16px; }
+
+    /* ── Timeline ── */
+    .history-timeline { display:flex; flex-direction:column; gap:16px; }
+
+    /* ── History Cards ── */
+    .history-card {
+      background:#fff; border-radius:16px; padding:20px 24px;
+      box-shadow:0 2px 12px rgba(0,0,0,.06); display:flex; align-items:center;
+      gap:20px; transition: transform .2s, box-shadow .2s; cursor:default;
+      border-left:5px solid #28a745;
+    }
+    .history-card:hover { transform:translateX(4px); box-shadow:0 4px 20px rgba(0,0,0,.1); }
+
+    .history-card.risk-high   { border-left-color:#dc3545; }
+    .history-card.risk-medium { border-left-color:#ff9800; }
+    .history-card.risk-low    { border-left-color:#28a745; }
+
+    .history-risk-dot {
+      width:48px; height:48px; border-radius:14px; display:flex;
+      align-items:center; justify-content:center; font-size:24px; flex-shrink:0;
+    }
+    .history-card.risk-high   .history-risk-dot { background:rgba(220,53,69,.1); }
+    .history-card.risk-medium .history-risk-dot { background:rgba(255,152,0,.1); }
+    .history-card.risk-low    .history-risk-dot { background:rgba(40,167,69,.1); }
+
+    .history-info { flex:1; min-width:0; }
+    .history-person { font-size:16px; font-weight:700; color:#0b3c5d; white-space:nowrap;
+      overflow:hidden; text-overflow:ellipsis; margin-bottom:4px; }
+    .history-result { font-size:14px; color:#555; }
+    .history-doc { font-size:12px; color:#777; margin-top:8px; line-height:1.4; border-top:1px dashed #eee; padding-top:8px; }
+
+    .history-meta { display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0; }
+    .history-prob { font-size:24px; font-weight:800; color:#0b3c5d; }
+    .history-badge { padding:6px 14px; border-radius:20px; font-size:12px; font-weight:700; color:#fff; }
+    .history-badge.low    { background:#28a745; }
+    .history-badge.medium { background:#ff9800; }
+    .history-badge.high   { background:#dc3545; }
+    .history-time { font-size:12px; color:#999; white-space:nowrap; }
+    .history-source {
+      font-size:11px; font-weight:700; padding:4px 10px; border-radius:10px;
+      text-transform:uppercase; letter-spacing:.5px;
+    }
+    .history-source.csv  { background:#e8f4ff; color:#1e90ff; }
+    .history-source.voice { background:#f0e8ff; color:#7c3aed; }
+
+    /* ── Responsive ── */
+    @media (max-width:768px) {
+      .history-header { flex-direction:column; align-items:flex-start; }
+      .history-card { flex-direction:column; align-items:flex-start; padding:16px 18px; gap:12px; }
+      .history-meta { align-items:flex-start; width:100%; flex-direction:row; justify-content:space-between; }
+      .filter-tabs { gap:6px; }
+      .filter-btn { padding:7px 14px; font-size:12px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="nav-left">
+    <button type="button" class="hamburger" id="navToggle" aria-label="Open menu">☰</button>
+    <div class="logo">🧠 ParkinsonAI</div>
+  </div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Voice Lab</a>
+    <a href="history.html">History</a>
+    <a href="analysis.html">Analysis</a>
+  </div>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+<aside class="sidebar" id="sidebar" aria-hidden="true">
+  <button type="button" class="sidebar-close" id="sidebarClose" aria-label="Close menu">×</button>
+  <nav class="sidebar-nav">
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Voice Lab</a>
+    <a href="history.html">History</a>
+    <a href="analysis.html">Analysis</a>
+  </nav>
+</aside>
+<script>
+(function(){
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('sidebarOverlay');
+  var openBtn = document.getElementById('navToggle');
+  var closeBtn = document.getElementById('sidebarClose');
+  function openSidebar(){ if(sidebar){ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); } if(overlay){ overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); } }
+  function closeSidebar(){ if(sidebar){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } if(overlay){ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); } }
+  if(openBtn) openBtn.addEventListener('click', openSidebar);
+  if(closeBtn) closeBtn.addEventListener('click', closeSidebar);
+  if(overlay) overlay.addEventListener('click', closeSidebar);
+  var links = document.querySelectorAll('.sidebar-nav a');
+  for(var i=0;i<links.length;i++) links[i].addEventListener('click', closeSidebar);
+})();
+</script>
+
+<!-- Page Header (matches dashboard & analysis) -->
+<div class="page-header">
+  <h1>📜 Prediction History</h1>
+  <p>Review all past predictions — CSV batch scans and voice file analyses are tracked here.</p>
+</div>
+
+<div class="history-container">
+
+  <!-- Filter Tabs -->
+  <div class="filter-tabs">
+    <button type="button" class="filter-btn active" id="filterAll" onclick="filterHistory('all')">
+      📋 All <span class="count-badge" id="countAll">0</span>
+    </button>
+    <button type="button" class="filter-btn" id="filterVoice" onclick="filterHistory('voice')">
+      🎤 Voice / WAV <span class="count-badge" id="countVoice">0</span>
+    </button>
+    <button type="button" class="filter-btn" id="filterCsv" onclick="filterHistory('csv')">
+      📄 CSV <span class="count-badge" id="countCsv">0</span>
+    </button>
+  </div>
+
+  <!-- Header with count & clear -->
+  <div class="history-header">
+    <h2>Results <span class="history-count" id="historyCount">0</span></h2>
+    <button type="button" class="clear-history-btn" id="clearHistoryBtn">🗑️ Clear All</button>
+  </div>
+
+  <!-- Timeline -->
+  <div id="historyTimeline" class="history-timeline">
+    <div class="history-empty" id="historyEmpty">
+      <div class="empty-icon">📋</div>
+      <p>No predictions yet. Run your first analysis in the Voice Lab!</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = "http://127.0.0.1:5001";
+let allRecords = [];
+let currentFilter = "all";
+
+function bc(risk) {
+  return risk === "High" ? "high" : risk === "Medium" ? "medium" : "low";
+}
+
+function formatTime(iso) {
+  try {
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return iso || "";
+    const now = new Date();
+    const diff = Math.floor((now - d) / 1000);
+    if (diff < 60) return "Just now";
+    if (diff < 3600) return Math.floor(diff / 60) + "m ago";
+    if (diff < 86400) return Math.floor(diff / 3600) + "h ago";
+    if (diff < 604800) return Math.floor(diff / 86400) + "d ago";
+    return d.toLocaleDateString("en-US", { day:"numeric", month:"short", year:"numeric", hour:"2-digit", minute:"2-digit" });
+  } catch(e) { return iso || ""; }
+}
+
+function getSourceLabel(source) {
+  if (source === "csv") return { cls: "csv", label: "CSV" };
+  return { cls: "voice", label: "VOICE" };
+}
+
+function renderRecords(records) {
+  const timeline = document.getElementById("historyTimeline");
+  const countEl  = document.getElementById("historyCount");
+  const clearBtn = document.getElementById("clearHistoryBtn");
+
+  countEl.textContent = records.length;
+
+  if (!records.length) {
+    timeline.innerHTML = `<div class="history-empty">
+      <div class="empty-icon">📋</div>
+      <p>No predictions found${currentFilter !== "all" ? " for this filter" : ""}. Run your first analysis in the Voice Lab!</p>
+    </div>`;
+    clearBtn.style.display = currentFilter === "all" && allRecords.length === 0 ? "none" : "inline-block";
+    return;
+  }
+
+  clearBtn.style.display = "inline-block";
+  timeline.innerHTML = records.map(r => {
+    const riskCls = r.risk_level === "High" ? "risk-high" : r.risk_level === "Medium" ? "risk-medium" : "risk-low";
+    const badgeCls = bc(r.risk_level);
+    const icon = r.risk_level === "High" ? "🔴" : r.risk_level === "Medium" ? "🟡" : "🟢";
+    const src = getSourceLabel(r.source);
+    const timeStr = formatTime(r.timestamp);
+
+    let personDisplay = r.person || "Unknown";
+    if (personDisplay.length > 40) personDisplay = personDisplay.substring(0, 40) + "…";
+
+    return `<div class="history-card ${riskCls}">
+      <div class="history-risk-dot">${icon}</div>
+      <div class="history-info">
+        <div class="history-person">${personDisplay} <span class="history-source ${src.cls}" style="margin-left:8px;font-size:10px;">${src.label}</span></div>
+        <div class="history-result">${r.result}</div>
+        ${r.doctor_suggestion ? `<div class="history-doc"><strong>Doctor Note:</strong> ${r.doctor_suggestion}</div>` : ''}
+      </div>
+      <div class="history-meta">
+        <span class="history-badge ${badgeCls}">${r.risk_level} Risk</span>
+        <span class="history-prob">${r.probability}%</span>
+        <span class="history-time">${timeStr}</span>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function updateFilterCounts() {
+  document.getElementById("countAll").textContent = allRecords.length;
+  document.getElementById("countVoice").textContent = allRecords.filter(r => r.source !== "csv").length;
+  document.getElementById("countCsv").textContent = allRecords.filter(r => r.source === "csv").length;
+}
+
+function filterHistory(type) {
+  currentFilter = type;
+  // Update active tab
+  document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+  document.getElementById("filter" + type.charAt(0).toUpperCase() + type.slice(1)).classList.add("active");
+
+  let filtered;
+  if (type === "voice") {
+    filtered = allRecords.filter(r => r.source !== "csv");
+  } else if (type === "csv") {
+    filtered = allRecords.filter(r => r.source === "csv");
+  } else {
+    filtered = allRecords;
+  }
+  renderRecords(filtered);
+}
+
+function loadHistory() {
+  fetch(`${API}/history`)
+    .then(res => res.json())
+    .then(records => {
+      allRecords = records;
+      updateFilterCounts();
+      filterHistory(currentFilter);
+    })
+    .catch(err => {
+      console.warn("History load failed:", err);
+      document.getElementById("historyTimeline").innerHTML = `<div class="history-empty">
+        <div class="empty-icon">⚠️</div>
+        <p>Could not load history. Make sure the backend server is running.</p>
+      </div>`;
+    });
+}
+
+function clearHistory() {
+  if (!confirm("Are you sure you want to completely clear the prediction history?")) return;
+  fetch(`${API}/history`, { method: "DELETE" })
+    .then(res => {
+      if (!res.ok) throw new Error("Server returned " + res.status);
+      return res.json();
+    })
+    .then(() => {
+      allRecords = [];
+      updateFilterCounts();
+      filterHistory("all");
+    })
+    .catch(err => alert("History clear failed: " + err.message));
+}
+
+// Bind clear button via addEventListener (more reliable than onclick attribute)
+document.addEventListener("DOMContentLoaded", function() {
+  loadHistory();
+  var clearBtn = document.getElementById("clearHistoryBtn");
+  if (clearBtn) {
+    clearBtn.addEventListener("click", clearHistory);
+  }
+});
+</script>
+</body>
+</html>

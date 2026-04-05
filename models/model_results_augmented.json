@@ -1,0 +1,38 @@
+{
+  "best_model_name": "GradientBoosting",
+  "balanced_accuracy_cv": 0.9464,
+  "roc_auc_cv": 0.9902,
+  "accuracy_cv": 0.9338,
+  "optimal_threshold": 0.35,
+  "uci_accuracy": 1.0,
+  "uci_balanced_accuracy": 1.0,
+  "wav_healthy_accuracy": 1.0,
+  "wav_pd_accuracy": 1.0,
+  "wav_total_accuracy": 1.0,
+  "n_uci_samples": 195,
+  "n_wav_augmentation": 60,
+  "n_total_training": 255,
+  "smote_applied": true,
+  "all_model_results": {
+    "GradientBoosting": {
+      "balanced_accuracy": 0.9464,
+      "roc_auc": 0.9902,
+      "accuracy": 0.9338
+    },
+    "RandomForest": {
+      "balanced_accuracy": 0.9355,
+      "roc_auc": 0.9834,
+      "accuracy": 0.9098
+    },
+    "SVM_RBF": {
+      "balanced_accuracy": 0.8284,
+      "roc_auc": 0.9327,
+      "accuracy": 0.8122
+    },
+    "LogisticRegression": {
+      "balanced_accuracy": 0.7492,
+      "roc_auc": 0.8949,
+      "accuracy": 0.7648
+    }
+  }
+}

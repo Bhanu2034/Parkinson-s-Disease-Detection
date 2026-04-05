@@ -1,0 +1,213 @@
+/* ═══════════════════════════════════════════════════
+   ParkinsonAI — Global Stylesheet
+═══════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing:border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  background: #f0f4fb;
+  color: #222;
+}
+
+/* ── Navbar ─────────────────────────────────────── */
+.navbar {
+  background: linear-gradient(135deg, #0b3c5d, #1e6fa8);
+  color: white;
+  padding: 0 40px;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar .logo {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.navbar a {
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+  margin-left: 24px;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+
+.navbar a:hover {
+  color: #fff;
+  border-bottom-color: rgba(255,255,255,0.6);
+}
+
+/* Nav: hamburger (main nav links moved to sidebar) */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.navbar .nav-links { display: none; }
+.hamburger {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.95);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background .2s, color .2s;
+}
+.hamburger:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.15);
+}
+
+/* Sidebar overlay */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .25s ease, visibility .25s ease;
+  z-index: 200;
+}
+.sidebar-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Collapsible sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  max-width: 85vw;
+  height: 100%;
+  background: linear-gradient(180deg, #0b3c5d, #1e6fa8);
+  box-shadow: 4px 0 24px rgba(0,0,0,0.2);
+  z-index: 201;
+  transform: translateX(-100%);
+  transition: transform .28s ease;
+  padding: 24px 0 32px;
+}
+.sidebar.open {
+  transform: translateX(0);
+}
+.sidebar-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.9);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background .2s, color .2s;
+}
+.sidebar-close:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.2);
+}
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 56px 20px 20px;
+}
+.sidebar-nav a {
+  color: rgba(255,255,255,0.92);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 15px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin: 0;
+  border-bottom: none;
+  transition: background .2s, color .2s;
+}
+.sidebar-nav a:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.15);
+}
+
+/* ── Container ──────────────────────────────────── */
+.container {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* ── Generic card ───────────────────────────────── */
+.card {
+  background: white;
+  padding: 26px;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+}
+
+/* ── Buttons ────────────────────────────────────── */
+button {
+  background: linear-gradient(135deg, #1e90ff, #0b6fcc);
+  color: white;
+  border: none;
+  padding: 11px 22px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform .15s, box-shadow .15s, background .2s;
+  box-shadow: 0 3px 10px rgba(30,144,255,0.3);
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 16px rgba(30,144,255,0.4);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* ── Help text ──────────────────────────────────── */
+.help-text {
+  font-size: 12.5px;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* ── Headings ───────────────────────────────────── */
+h1 { color: #0b3c5d; }
+h2 { color: #0b3c5d; }
+h3 { color: #0b3c5d; }
+
+code {
+  background: #f0f4fb;
+  border: 1px solid #d0dcea;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 12px;
+  color: #1e6fa8;
+}
+
+/* ── Footer ─────────────────────────────────────── */
+.footer-note {
+  text-align: center;
+  padding: 24px 20px;
+  font-size: 13px;
+  color: #888;
+  border-top: 1px solid #e8ecf2;
+  margin-top: 40px;
+}

@@ -1,0 +1,74 @@
+﻿Model type: CalibratedClassifierCV
+Scaler type: MinMaxScaler, n_features=16
+Feature names (16): ['MDVP:Fo(Hz)', 'MDVP:Fhi(Hz)', 'MDVP:Flo(Hz)', 'MDVP:Jitter(%)', 'MDVP:Jitter(Abs)', 'MDVP:RAP', 'MDVP:PPQ', 'Jitter:DDP', 'MDVP:Shimmer', 'MDVP:Shimmer(dB)', 'Shimmer:APQ3', 'Shimmer:APQ5', 'MDVP:APQ', 'Shimmer:DDA', 'NHR', 'HNR']
+
+======================================================================
+TEST 1: parkinsons.csv predictions
+======================================================================
+Missing features in CSV: []
+Extra columns in CSV (not used by model): ['RPDE', 'DFA', 'spread1', 'spread2', 'D2', 'PPE']
+
+Accuracy:          1.0000
+Balanced Accuracy: 1.0000
+Confusion Matrix:
+  TN=48  FP=0
+  FN=0  TP=147
+
+Healthy samples (n=48):
+  prob range: 0.0313 - 0.3442
+  prob mean:  0.1151
+  correctly predicted as healthy: 48/48
+
+PD samples (n=147):
+  prob range: 0.7673 - 0.9927
+  prob mean:  0.9537
+  correctly predicted as PD:      147/147
+
+Total predicted PD:      147/195
+Total predicted Healthy: 48/195
+
+              precision    recall  f1-score   support
+
+     Healthy       1.00      1.00      1.00        48
+          PD       1.00      1.00      1.00       147
+
+    accuracy                           1.00       195
+   macro avg       1.00      1.00      1.00       195
+weighted avg       1.00      1.00      1.00       195
+
+======================================================================
+TEST 2: WAV file diagnostics
+======================================================================
+
+  Testing healthy WAVs (5 files):
+    ! healthy_female_01.wav: ERROR - 'charmap' codec can't encode character '\u2713' in position 4: character maps to <undefined>
+    ! healthy_female_02.wav: ERROR - 'charmap' codec can't encode character '\u2713' in position 4: character maps to <undefined>
+    ! healthy_female_03.wav: ERROR - 'charmap' codec can't encode character '\u2713' in position 4: character maps to <undefined>
+    ! healthy_female_04.wav: ERROR - 'charmap' codec can't encode character '\u2713' in position 4: character maps to <undefined>
+    ! healthy_female_05.wav: ERROR - 'charmap' codec can't encode character '\u2713' in position 4: character maps to <undefined>
+
+  Testing pd WAVs (5 files):
+    ! pd_mild_01.wav: ERROR - 'charmap' codec can't encode character '\u2713' in position 4: character maps to <undefined>
+    ! pd_mild_02.wav: ERROR - 'charmap' codec can't encode character '\u2713' in position 4: character maps to <undefined>
+    ! pd_mild_03.wav: ERROR - 'charmap' codec can't encode character '\u2713' in position 4: character maps to <undefined>
+    ! pd_mild_04.wav: ERROR - 'charmap' codec can't encode character '\u2713' in position 4: character maps to <undefined>
+    ! pd_mild_05.wav: ERROR - 'charmap' codec can't encode character '\u2713' in position 4: character maps to <undefined>
+
+  sample_01.wav: prob=0.9834 -> PD
+    Fo=164.8 Jitter%=0.01399 Shimmer=0.0265 HNR=16.2
+    Raw features: [164.840458, 167.868811, 161.738438, 0.013993, 8.5e-05, 0.007859, 0.009138, 0.023576, 0.026474, 0.230207, 0.015165, 0.016673, 0.017701, 0.045495, 0.023769, 16.239959]
+    Clipped:      [164.840458, 167.868811, 161.738438, 0.013993, 8.5e-05, 0.007859, 0.009138, 0.023576, 0.026474, 0.230207, 0.015165, 0.016673, 0.017701, 0.045495, 0.023769, 16.239959]
+
+  sample_02.wav: prob=0.9901 -> PD
+    Fo=162.2 Jitter%=0.01565 Shimmer=0.0303 HNR=15.0
+    Raw features: [162.218999, 165.880441, 157.67687, 0.015652, 9.6e-05, 0.008835, 0.010327, 0.026506, 0.030284, 0.263319, 0.017385, 0.018755, 0.019991, 0.052156, 0.03171, 14.98799]
+    Clipped:      [162.218999, 165.880441, 157.67687, 0.015652, 9.6e-05, 0.008835, 0.010327, 0.026506, 0.030284, 0.263319, 0.017385, 0.018755, 0.019991, 0.052156, 0.03171, 14.98799]
+
+  parkinsons_5sec.wav: prob=0.9329 -> PD
+    Fo=120.0 Jitter%=0.00599 Shimmer=0.0601 HNR=19.0
+    Raw features: [119.984031, 124.474033, 115.866682, 0.005986, 5e-05, 0.001706, 0.002176, 0.005119, 0.060084, 0.567668, 0.030839, 0.034979, 0.048628, 0.092517, 0.01247, 19.041451]
+    Clipped:      [119.984031, 124.474033, 115.866682, 0.005986, 5e-05, 0.001706, 0.002176, 0.005119, 0.060084, 0.567668, 0.030839, 0.034979, 0.048628, 0.092517, 0.01247, 19.041451]
+
+======================================================================
+DIAGNOSIS COMPLETE
+======================================================================

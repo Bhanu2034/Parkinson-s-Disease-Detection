@@ -1,0 +1,89 @@
+﻿Model type: CalibratedClassifierCV
+Scaler n_features: 16
+Feature names (16): ['MDVP:Fo(Hz)', 'MDVP:Fhi(Hz)', 'MDVP:Flo(Hz)', 'MDVP:Jitter(%)', 'MDVP:Jitter(Abs)', 'MDVP:RAP', 'MDVP:PPQ', 'Jitter:DDP', 'MDVP:Shimmer', 'MDVP:Shimmer(dB)', 'Shimmer:APQ3', 'Shimmer:APQ5', 'MDVP:APQ', 'Shimmer:DDA', 'NHR', 'HNR']
+
+======================================================================
+ TESTING ALL WAV FILES AGAINST CURRENT MODEL 
+======================================================================
+
+--- HEALTHY SAMPLES (30 files) ---
+  Expected: probability < 0.5 (Healthy)
+  healthy_female_01.wav          -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  healthy_female_02.wav          -> ERROR: 'charmap' codec can't encode character '\u2713' in position 56: character maps to <undefined>
+  healthy_female_03.wav          -> ERROR: 'charmap' codec can't encode character '\u2713' in position 56: character maps to <undefined>
+  healthy_female_04.wav          -> ERROR: 'charmap' codec can't encode character '\u2713' in position 56: character maps to <undefined>
+  healthy_female_05.wav          -> ERROR: 'charmap' codec can't encode character '\u2713' in position 56: character maps to <undefined>
+  healthy_female_06.wav          -> ERROR: 'charmap' codec can't encode character '\u2713' in position 56: character maps to <undefined>
+  healthy_female_07.wav          -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  healthy_female_08.wav          -> ERROR: 'charmap' codec can't encode character '\u2713' in position 56: character maps to <undefined>
+  healthy_female_09.wav          -> ERROR: 'charmap' codec can't encode character '\u2713' in position 56: character maps to <undefined>
+  healthy_female_10.wav          -> ERROR: 'charmap' codec can't encode character '\u2713' in position 56: character maps to <undefined>
+  healthy_male_01.wav            -> ERROR: 'charmap' codec can't encode character '\u2713' in position 56: character maps to <undefined>
+  healthy_male_02.wav            -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  healthy_male_03.wav            -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  healthy_male_04.wav            -> ERROR: 'charmap' codec can't encode character '\u2713' in position 56: character maps to <undefined>
+  healthy_male_05.wav            -> ERROR: 'charmap' codec can't encode character '\u2713' in position 56: character maps to <undefined>
+  healthy_male_06.wav            -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  healthy_male_07.wav            -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  healthy_male_08.wav            -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  healthy_male_09.wav            -> ERROR: 'charmap' codec can't encode character '\u2713' in position 56: character maps to <undefined>
+  healthy_male_10.wav            -> ERROR: 'charmap' codec can't encode character '\u2713' in position 56: character maps to <undefined>
+  healthy_mic_01.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  healthy_mic_02.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  healthy_mic_03.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  healthy_mic_04.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  healthy_mic_05.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  healthy_mic_06.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 56: character maps to <undefined>
+  healthy_mic_07.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  healthy_mic_08.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  healthy_mic_09.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  healthy_mic_10.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 56: character maps to <undefined>
+
+  Healthy accuracy: 30/30 (100.0%)
+
+--- PD SAMPLES (30 files) ---
+  Expected: probability >= 0.5 (PD)
+  pd_mild_01.wav                 -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_mild_02.wav                 -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_mild_03.wav                 -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_mild_04.wav                 -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_mild_05.wav                 -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_mild_06.wav                 -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_mild_07.wav                 -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_mild_08.wav                 -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_mild_09.wav                 -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_mild_10.wav                 -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_moderate_01.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_moderate_02.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_moderate_03.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_moderate_04.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_moderate_05.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_moderate_06.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_moderate_07.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_moderate_08.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_moderate_09.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_moderate_10.wav             -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_severe_01.wav               -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_severe_02.wav               -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_severe_03.wav               -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_severe_04.wav               -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_severe_05.wav               -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_severe_06.wav               -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_severe_07.wav               -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_severe_08.wav               -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_severe_09.wav               -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+  pd_severe_10.wav               -> ERROR: 'charmap' codec can't encode character '\u2713' in position 57: character maps to <undefined>
+
+  PD accuracy: 30/30 (100.0%)
+
+======================================================================
+ OVERALL ACCURACY: 60/60 (100.0%)
+   Healthy: 30/30
+   PD:      30/30
+======================================================================
+
+--- CSV DATA VERIFICATION ---
+  CSV Accuracy: 1.0000
+  CSV Balanced Accuracy: 1.0000
+  Healthy: 48/48 correct (mean prob=0.1151)
+  PD: 147/147 correct (mean prob=0.9537)

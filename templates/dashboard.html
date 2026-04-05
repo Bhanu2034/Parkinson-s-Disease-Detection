@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voice Screening Lab – ParkinsonAI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    body { background: #f0f4fb; }
+
+    /* ── Page header ── */
+    .page-header { background: linear-gradient(135deg,#072a44,#0d4f8a);
+      color:#fff; padding:32px 40px; margin-bottom:28px; border-radius:0 0 20px 20px; }
+    .page-header h1 { margin:0 0 6px; font-size:26px; font-weight:800; color:#ffffff; text-shadow:0 1px 4px rgba(0,0,0,.4); }
+    .page-header p  { margin:0; font-size:14px; color:#e8f4ff; }
+    .model-pill { display:inline-block; background:rgba(255,255,255,.25);
+      border:1px solid rgba(255,255,255,.5); border-radius:20px;
+      padding:5px 14px; font-size:12px; margin-top:10px; font-weight:700; color:#fff; }
+
+    /* ── Pipeline banner ── */
+    .pipeline-banner { display:flex; align-items:center; justify-content:center;
+      flex-wrap:wrap; gap:4px; background:#fff; border-radius:16px;
+      padding:16px 24px; margin-bottom:24px;
+      box-shadow:0 2px 12px rgba(0,0,0,.07); }
+    .pipe-step  { text-align:center; font-size:11px; color:#0b3c5d; font-weight:600;
+      background:#f0f6ff; border-radius:10px; padding:10px 14px; min-width:90px;
+      line-height:1.7; }
+    .pipe-arrow { color:#1e90ff; font-size:20px; font-weight:700; }
+
+    /* ── Option cards ── */
+    .option-cards { display:flex; gap:20px; flex-wrap:wrap; align-items:stretch; }
+    .option-card  { flex:1; min-width:320px; background:#fff; border-radius:18px;
+      box-shadow:0 4px 18px rgba(0,0,0,.08); padding:28px 30px; box-sizing:border-box; }
+    .option-badge { display:inline-block; background:#e8f4ff; color:#1e90ff;
+      font-size:11px; font-weight:700; padding:3px 12px; border-radius:20px;
+      margin-bottom:12px; letter-spacing:.5px; }
+    .option-card h3 { margin:0 0 16px; color:#0b3c5d; font-size:19px; }
+
+    /* ── Steps ── */
+    .steps { list-style:none; padding:0; margin:0 0 20px; }
+    .steps li { display:flex; align-items:flex-start; gap:12px;
+      font-size:13.5px; color:#444; margin-bottom:12px; line-height:1.6; }
+    .step-num { flex-shrink:0; width:26px; height:26px; background:#1e90ff; color:#fff;
+      border-radius:50%; font-size:11px; font-weight:700;
+      display:flex; align-items:center; justify-content:center; margin-top:1px; }
+    .step-text { flex:1; }
+
+    /* ── Recording box ── */
+    /* round dots */
+    .round-dot { width:34px; height:34px; border-radius:50%; border:2px solid #ddd;
+      display:flex; align-items:center; justify-content:center;
+      font-size:13px; font-weight:700; color:#aaa; background:#f8f8f8; transition:all .3s; }
+    .round-dot.active  { border-color:#1e90ff; color:#1e90ff; background:#e8f4ff; }
+    .round-dot.done    { border-color:#28a745; color:#fff; background:#28a745; }
+    .round-dot.skipped { border-color:#ffc107; color:#fff; background:#ffc107; }
+    /* round status chips */
+    .round-chip { padding:3px 10px; border-radius:20px; font-size:11.5px; font-weight:600; }
+    .round-chip.done    { background:#e8f5e9; color:#2e7d32; }
+    .round-chip.skipped { background:#fff8e1; color:#856404; }
+    /* recorder box */
+    #voiceRecorder { background:linear-gradient(135deg,#f0f6ff,#e8f4ff);
+      border:2px dashed #90c0f8; border-radius:14px; padding:18px; }
+    #recordBtn { padding:12px 22px; font-size:14px; font-weight:600;
+      border-radius:10px; background:linear-gradient(135deg,#1e90ff,#0b6fcc);
+      box-shadow:0 4px 12px rgba(30,144,255,.35); }
+    #recordBtn:disabled { background:#90c0f0; box-shadow:none; cursor:not-allowed; }
+    #analyseBtn { padding:12px 22px; font-size:14px; font-weight:600; border-radius:10px;
+      box-shadow:0 4px 12px rgba(13,71,161,.3); }
+    #recRing.recording { border-color:#e53935; color:#e53935; animation:ringpulse 1s infinite; }
+    #recRing.done      { border-color:#28a745; color:#28a745; }
+    @keyframes ringpulse { 0%,100%{box-shadow:0 0 0 0 rgba(229,57,53,.4)} 50%{box-shadow:0 0 0 8px rgba(229,57,53,0)} }
+    .rec-dot { width:12px; height:12px; border-radius:50%; background:#e53935;
+      display:inline-block; animation:recpulse 1s infinite; }
+    .rec-dot.hidden { display:none; }
+    @keyframes recpulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.4)} }
+    #countdown { display:none; }
+    .progress-wrap { width:100%; height:10px; background:#dce8f8; border-radius:20px; overflow:hidden; }
+    .progress-bar  { height:100%; width:0%; background:linear-gradient(90deg,#1e90ff,#00c6ff); transition:width 1s linear; }
+    #micStatus { font-size:13px; min-height:18px; margin:4px 0; font-weight:500; }
+    #micStatus.recording { color:#1e90ff; }
+    #micStatus.analysing  { color:#ff9800; }
+    #micStatus.done       { color:#28a745; }
+    #micStatus.error      { color:#dc3545; }
+
+    /* ── WAV upload box (Option 2) ── */
+    .wav-upload-box { background:linear-gradient(135deg,#f0f6ff,#e8f4ff);
+      border:2px dashed #90c0f8; border-radius:14px; padding:18px; }
+    .wav-upload-label { display:flex; align-items:center; gap:10px; padding:14px 20px;
+      background:#fff; border:2px solid #c5daf8; border-radius:10px; cursor:pointer;
+      font-size:14px; font-weight:600; color:#0b3c5d; transition:all .2s; }
+    .wav-upload-label:hover { border-color:#1e90ff; background:#f8fbff; }
+    .wav-upload-icon { font-size:22px; }
+    .wav-status { font-size:13px; min-height:18px; margin:8px 0 0; font-weight:500; }
+    .wav-status.analysing { color:#ff9800; }
+    .wav-status.done      { color:#28a745; }
+    .wav-status.error     { color:#dc3545; }
+    .wav-analyse-btn { padding:12px 22px; font-size:14px; font-weight:600; border-radius:10px;
+      background:linear-gradient(135deg,#1a73e8,#0d47a1); color:#fff; border:0;
+      box-shadow:0 4px 12px rgba(13,71,161,.3); cursor:pointer; }
+    .wav-analyse-btn:disabled { background:#90c0f0; box-shadow:none; cursor:not-allowed; opacity:.8; }
+
+    /* ── Pipeline steps indicator ── */
+    #pipelineStatus { display:none; margin-top:16px; }
+    #pipelineStatus p { font-size:12px; font-weight:700; color:#0b3c5d; margin:0 0 8px; }
+    .pipe-item { font-size:12.5px; color:#999; padding:7px 12px;
+      background:#f8f8f8; border-radius:8px; border-left:3px solid #ddd;
+      margin-bottom:4px; transition:all .3s ease; }
+    .pipe-item.active { color:#1e90ff; background:#e8f4ff; border-color:#1e90ff; font-weight:600; }
+    .pipe-item.done   { color:#28a745; background:#f0fff4; border-color:#28a745; }
+
+    /* ── Tips box ── */
+    .tips-box { background:#fffbe6; border-left:4px solid #ffc107; border-radius:8px;
+      padding:12px 16px; font-size:12.5px; color:#7a5f00; margin-top:16px; line-height:1.8; }
+    .tips-box strong { display:block; margin-bottom:4px; color:#5a4200; font-size:13px; }
+
+    /* ── Status bar ── */
+    #statusBar { padding:12px 16px; border-radius:10px; font-size:14px; font-weight:500;
+      display:none; margin-bottom:16px; align-items:center; gap:8px; }
+    #statusBar.info    { background:#e8f4ff; color:#1e5fa8; display:flex; }
+    #statusBar.success { background:#e8f8ee; color:#1a7a40; display:flex; }
+    #statusBar.error   { background:#fde8e8; color:#b00020; display:flex; }
+
+    /* ── Result card ── */
+    .result-card { background:#fff; border-radius:18px; box-shadow:0 4px 20px rgba(0,0,0,.09);
+      margin-top:6px; overflow:hidden; }
+    .result-header { padding:18px 22px; display:flex; justify-content:space-between;
+      align-items:center; cursor:pointer; }
+    .result-header.low    { background:linear-gradient(135deg,#e8f8ee,#d0f0dd); }
+    .result-header.medium { background:linear-gradient(135deg,#fff8e8,#ffecc0); }
+    .result-header.high   { background:linear-gradient(135deg,#fde8e8,#fcc0c0); }
+    .result-title { font-size:16px; font-weight:700; color:#0b3c5d; }
+    .result-subtitle { font-size:13px; color:#555; margin-top:2px; }
+    .badge { padding:5px 14px; border-radius:20px; color:#fff;
+      font-size:12px; font-weight:700; letter-spacing:.3px; }
+    .badge.low    { background:#28a745; }
+    .badge.medium { background:#ff9800; }
+    .badge.high   { background:#dc3545; }
+    .result-body { padding:22px; display:none; }
+    .result-body.open { display:block; }
+
+    /* ── Probability bar ── */
+    .prob-section { margin-bottom:20px; }
+    .prob-label { font-size:12px; color:#888; margin-bottom:4px; }
+    .prob-track { height:18px; background:#eee; border-radius:10px; overflow:hidden; position:relative; }
+    .prob-fill  { height:100%; border-radius:10px; transition:width 1.2s ease; }
+    .prob-fill.low    { background:linear-gradient(90deg,#28a745,#5dd87a); }
+    .prob-fill.medium { background:linear-gradient(90deg,#ff9800,#ffcc50); }
+    .prob-fill.high   { background:linear-gradient(90deg,#dc3545,#ff7070); }
+    .prob-number { font-size:32px; font-weight:800; color:#0b3c5d; margin:6px 0 2px; }
+    .prob-sub    { font-size:12px; color:#888; }
+
+    /* ── Doctor box ── */
+    .doctor-box { border-radius:10px; padding:12px 16px; font-size:13.5px; margin:14px 0; }
+    .doctor-box.low    { background:#f0fff4; border-left:4px solid #28a745; color:#1a5c30; }
+    .doctor-box.medium { background:#fff8f0; border-left:4px solid #ff9800; color:#7a4a00; }
+    .doctor-box.high   { background:#fff0f0; border-left:4px solid #dc3545; color:#7a1020; }
+    .doctor-box strong { display:block; margin-bottom:4px; font-size:14px; }
+
+    /* ── Feature tables ── */
+    .section-title { font-size:14px; font-weight:700; color:#0b3c5d;
+      margin:18px 0 8px; display:flex; align-items:center; gap:6px; }
+    .feat-table, .bio-table { width:100%; border-collapse:collapse; font-size:13px; }
+    .feat-table th, .bio-table th { background:#0b3c5d; color:#fff; padding:8px 12px; text-align:left; }
+    .feat-table td, .bio-table td { padding:7px 12px; border-bottom:1px solid #f0f0f0; }
+    .feat-table tr:hover td, .bio-table tr:hover td { background:#f5f8ff; }
+    .impact-bar-wrap { display:inline-block; width:80px; height:8px; background:#e8e8e8;
+      border-radius:4px; vertical-align:middle; margin-right:8px; overflow:hidden; }
+    .impact-bar { height:100%; background:linear-gradient(90deg,#1e90ff,#00c6ff); border-radius:4px; }
+    .bio-val { font-family:monospace; font-size:12px; color:#333; }
+    details > summary { cursor:pointer; font-weight:600; color:#1e90ff; font-size:13px;
+      padding:10px 0; list-style:none; display:flex; align-items:center; gap:6px; }
+    details > summary::before { content:"▶"; font-size:10px; transition:.2s; }
+    details[open] > summary::before { content:"▼"; }
+
+    /* ── Download button ── */
+    .dl-btn { background:linear-gradient(135deg,#0b3c5d,#1e6fa8); color:#fff; border:none;
+      padding:11px 22px; border-radius:10px; cursor:pointer; font-size:14px;
+      font-weight:600; margin-top:16px; display:inline-flex; align-items:center; gap:8px;
+      box-shadow:0 3px 10px rgba(11,60,93,.25); transition:transform .1s, box-shadow .1s; }
+    .dl-btn:hover { transform:translateY(-1px); box-shadow:0 5px 14px rgba(11,60,93,.3); }
+
+    /* ── Model tag ── */
+    .model-tag { display:inline-block; background:#e8f4ff; color:#1e6fa8;
+      font-size:11px; font-weight:600; padding:3px 10px; border-radius:12px; margin-left:8px; }
+
+    .container { max-width:1060px; }
+
+    /* ── Dashboard Tabs ── */
+    .dash-tabs { display:flex; gap:8px; flex-wrap:wrap;
+      max-width:1060px; margin:0 auto 24px; padding:0 20px; }
+    .dash-tab-btn {
+      padding:10px 22px; border:2px solid #1e90ff; border-radius:22px;
+      background:#fff; color:#1e90ff; font-weight:700; font-size:14px;
+      cursor:pointer; transition:.2s;
+    }
+    .dash-tab-btn.active, .dash-tab-btn:hover { background:#1e90ff; color:#fff; }
+
+    /* ── Abstract Page ── */
+    .abstract-wrap { max-width:1060px; margin:0 auto; padding:0 20px 60px; }
+    .abstract-hero {
+      background:linear-gradient(135deg,#072a44,#0d4f8a);
+      color:#fff; border-radius:20px; padding:36px 40px; margin-bottom:28px;
+      position:relative; overflow:hidden;
+    }
+    .abstract-hero::before {
+      content:""; position:absolute; inset:0;
+      background-image:radial-gradient(circle at 80% 50%, rgba(255,255,255,.06) 0 1px, transparent 1px);
+      background-size:60px 60px;
+    }
+    .abstract-hero h2 { margin:0 0 8px; font-size:22px; font-weight:800; position:relative; color:#ffffff; text-shadow:0 1px 4px rgba(0,0,0,.3); }
+    .abstract-hero .doi { font-size:12px; color:#c8e0ff; margin-bottom:16px; position:relative; }
+    .abstract-hero p { font-size:15px; line-height:1.85; margin:0; position:relative; color:#f0f6ff; }
+
+    .abstract-section { background:#fff; border-radius:18px; padding:28px 32px;
+      box-shadow:0 4px 18px rgba(0,0,0,.08); margin-bottom:22px; }
+    .abstract-section h3 { margin:0 0 14px; color:#0b3c5d; font-size:17px; font-weight:700;
+      display:flex; align-items:center; gap:8px; border-bottom:2px solid #f0f0f0; padding-bottom:10px; }
+    .abstract-section p, .abstract-section li { font-size:14px; color:#444; line-height:1.8; margin:0 0 8px; }
+    .abstract-section ul { padding-left:20px; }
+
+    .model-comp-table { width:100%; border-collapse:collapse; font-size:13px; }
+    .model-comp-table th { background:#0b3c5d; color:#fff; padding:10px 14px; }
+    .model-comp-table td { padding:9px 14px; border-bottom:1px solid #f0f0f0; }
+    .model-comp-table tr:hover td { background:#f5f8ff; }
+    .model-comp-table tr.highlight td { background:#e8f8ee; font-weight:700; }
+    .model-comp-table tr.highlight td:first-child::after { content:" ⭐"; }
+
+    .keywords-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+    .keyword { background:#e8f4ff; color:#1e6fa8; font-size:12px; font-weight:600;
+      padding:4px 12px; border-radius:10px; }
+
+    .team-abstract { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px; }
+    .team-abs-card { background:#f8fbff; border-radius:14px; padding:18px 20px;
+      border-left:4px solid #1e90ff; text-align:center; }
+    .team-abs-card.leader { border-left-color:#28a745; background:#f0fff4; }
+    .team-abs-card .ta-id { font-size:11px; font-family:monospace; color:#999; margin-bottom:4px; }
+    .team-abs-card .ta-name { font-size:14px; font-weight:700; color:#0b3c5d; margin-bottom:4px; }
+    .team-abs-card .ta-role { font-size:11px; color:#1e90ff; font-weight:600; }
+    .team-abs-card.leader .ta-role { color:#28a745; }
+
+    .guide-abs-card { background:linear-gradient(135deg,#0b3c5d,#1a6fb3); color:#fff;
+      border-radius:16px; padding:22px 28px; margin-bottom:14px; display:flex;
+      align-items:center; gap:20px; flex-wrap:wrap; }
+    .guide-abs-card .g-icon { font-size:44px; }
+    .guide-abs-card .g-info .g-label { font-size:11px; color:rgba(255,255,255,.9); text-transform:uppercase; letter-spacing:1px; }
+    .guide-abs-card .g-info .g-name { font-size:20px; font-weight:800; margin:4px 0; color:#fff; }
+    .guide-abs-card .g-info .g-title { font-size:13px; color:rgba(255,255,255,.95); line-height:1.5; }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="nav-left">
+    <button type="button" class="hamburger" id="navToggle" aria-label="Open menu">☰</button>
+    <div class="logo">🧠 ParkinsonAI</div>
+  </div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Voice Lab</a>
+    <a href="history.html">History</a>
+    <a href="analysis.html">Analysis</a>
+  </div>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+<aside class="sidebar" id="sidebar" aria-hidden="true">
+  <button type="button" class="sidebar-close" id="sidebarClose" aria-label="Close menu">×</button>
+  <nav class="sidebar-nav">
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Voice Lab</a>
+    <a href="history.html">History</a>
+    <a href="analysis.html">Analysis</a>
+  </nav>
+</aside>
+<script>
+(function(){
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('sidebarOverlay');
+  var openBtn = document.getElementById('navToggle');
+  var closeBtn = document.getElementById('sidebarClose');
+  function openSidebar(){ if(sidebar){ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); } if(overlay){ overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); } }
+  function closeSidebar(){ if(sidebar){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } if(overlay){ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); } }
+  if(openBtn) openBtn.addEventListener('click', openSidebar);
+  if(closeBtn) closeBtn.addEventListener('click', closeSidebar);
+  if(overlay) overlay.addEventListener('click', closeSidebar);
+  var links = document.querySelectorAll('.sidebar-nav a');
+  for(var i=0;i<links.length;i++) links[i].addEventListener('click', closeSidebar);
+})();
+</script>
+
+<!-- Page Header -->
+<div class="page-header">
+  <h1>🔬 Voice Screening Lab</h1>
+  <p>AI-powered Parkinson's screening — upload your voice and get instant risk analysis</p>
+  <span class="model-pill">🤖 Active Model: DBN (Proposed) — 92.31% Acc · 98.62% AUC</span>
+</div>
+
+<!-- ══════ TAB: PREDICTION ══════ -->
+<div id="dashtab-predict">
+<div class="container" style="padding:0 20px 40px;">
+
+  <!-- Pipeline Banner -->
+  <div class="pipeline-banner">
+    <div class="pipe-step">🎵<br>Upload WAV</div>
+    <div class="pipe-arrow">›</div>
+    <div class="pipe-step">🔬<br>Extract 16 Biomarkers</div>
+    <div class="pipe-arrow">›</div>
+    <div class="pipe-step">⚖️<br>Scale Features</div>
+    <div class="pipe-arrow">›</div>
+    <div class="pipe-step">🧠<br>DBN Model</div>
+    <div class="pipe-arrow">›</div>
+    <div class="pipe-step">📊<br>Risk Prediction</div>
+  </div>
+
+  <!-- Status Bar -->
+  <div id="statusBar"></div>
+
+  <!-- Options Row -->
+  <div class="option-cards">
+
+    <!-- Option 1: CSV -->
+    <div class="option-card">
+      <span class="option-badge">OPTION 1</span>
+      <h3>📄 Batch Scan — CSV Dataset</h3>
+      <ul class="steps">
+        <li>
+          <span class="step-num">1</span>
+          <span class="step-text">Prepare a CSV with the 16 required voice feature columns —
+            <em>MDVP:Fo(Hz), Jitter, Shimmer, HNR, NHR</em> and others.</span>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <span class="step-text">Each row is one recording. Include a <code>name</code> column to group multiple recordings per person.</span>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <span class="step-text">Click <strong>Upload &amp; Predict</strong> — the DBN model analyses every person and shows risk results.</span>
+        </li>
+      </ul>
+      <input type="file" id="fileInput" accept=".csv" style="display:block; margin-bottom:14px;">
+      <button onclick="uploadFile()">⬆️ Upload &amp; Predict</button>
+      <p class="help-text" style="margin-top:10px;">
+        💡 Test with <code>parkinsons.csv</code> (UCI dataset, 195 recordings).
+      </p>
+    </div>
+
+    <!-- Option 2: WAV file upload -->
+    <div class="option-card">
+      <span class="option-badge">OPTION 2</span>
+      <h3>🎤 AI Voice Scan — Upload WAV</h3>
+
+      <!-- How it works -->
+      <ul class="steps">
+        <li>
+          <span class="step-num">1</span>
+          <span class="step-text">Upload a <strong>WAV audio file</strong> containing voice (e.g. sustained vowel or short speech).</span>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <span class="step-text">The system extracts <strong>16 acoustic biomarkers</strong> (pitch, jitter, shimmer, HNR, NHR) from your voice using Praat analysis.</span>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <span class="step-text">You get a <strong>risk level</strong> (Low / Medium / High) and a downloadable report with biomarker values.</span>
+        </li>
+      </ul>
+
+      <!-- WAV upload UI -->
+      <div id="wavUploadBox" class="wav-upload-box">
+        <input type="file" id="wavFileInput" accept=".wav,audio/wav,audio/wave" style="display:none;">
+        <label for="wavFileInput" class="wav-upload-label">
+          <span class="wav-upload-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1e90ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
+          <span id="wavFileName">Choose a WAV file…</span>
+        </label>
+        <p id="wavStatus" class="wav-status"></p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+          <button id="wavAnalyseBtn" onclick="submitWavFile()" disabled
+                  class="wav-analyse-btn">
+            🧠 Analyse WAV
+          </button>
+        </div>
+      </div>
+
+      <div id="pipelineStatus" style="display:none; margin-top:14px;">
+        <p style="font-weight:600; margin-bottom:6px;">Processing pipeline:</p>
+        <div id="ps1" class="pipe-item">📥 Uploading file</div>
+        <div id="ps2" class="pipe-item">🎵 Extracting pitch tracks (Praat)</div>
+        <div id="ps3" class="pipe-item">📐 Computing jitter &amp; shimmer</div>
+        <div id="ps4" class="pipe-item">🔢 Computing HNR · NHR</div>
+        <div id="ps5" class="pipe-item">🧠 Running model</div>
+        <div id="ps6" class="pipe-item">📊 Generating report</div>
+      </div>
+
+      <div class="tips-box" style="margin-top:14px;">
+        <strong>💡 Tips for best accuracy</strong><br>
+        • Use a <strong>WAV file</strong> with clear voice (sustained vowel or short speech, 4+ seconds).<br>
+        • Use a WAV file recorded in a <strong>quiet environment</strong>; avoid background music or fan noise.<br>
+        • Supported: <code>.wav</code> (other formats may be converted by the server if supported).
+      </div>
+    </div>
+
+  </div><!-- /option-cards -->
+
+  <!-- Results Section -->
+  <div id="results" style="margin-top:24px;"></div>
+
+</div>
+</div><!-- /dashtab-predict -->
+
+
+<script>
+// Backend runs on port 5001 (5000 often in use by macOS AirPlay)
+const API = "http://127.0.0.1:5001";
+
+/* Tab switching removed — single-page layout */
+// WAV file input: enable Analyse when a file is chosen
+document.addEventListener("DOMContentLoaded", function() {
+  var wavInput = document.getElementById("wavFileInput");
+  var wavName  = document.getElementById("wavFileName");
+  var wavBtn   = document.getElementById("wavAnalyseBtn");
+  if (wavInput && wavName && wavBtn) {
+    wavInput.addEventListener("change", function() {
+      var f = this.files && this.files[0];
+      if (f) {
+        wavName.textContent = f.name;
+        wavBtn.disabled = false;
+        var status = document.getElementById("wavStatus");
+        status.textContent = "";
+        status.className = "wav-status";
+      } else {
+        wavName.textContent = "Choose a WAV file…";
+        wavBtn.disabled = true;
+      }
+    });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   Safe result store — avoids inline JSON in onclick
+   (which breaks on emojis / apostrophes → undefined)
+───────────────────────────────────────────── */
+const RESULTS = {};
+let resultCounter = 0;
+
+function storeResult(r) {
+  const key = "k" + (++resultCounter);
+  RESULTS[key] = r;
+  return key;
+}
+
+/* ── Helpers ─────────────────────────────── */
+function setStatus(msg, type = "info") {
+  const el = document.getElementById("statusBar");
+  el.className = type;
+  el.innerHTML = msg || "";
+  el.style.display = msg ? "flex" : "none";
+}
+
+function bc(risk) {
+  return risk === "High" ? "high" : risk === "Medium" ? "medium" : "low";
+}
+
+/* ── Build probability bar ─────────────── */
+function buildProb(prob, risk) {
+  const cls = bc(risk);
+  return `
+    <div class="prob-section">
+      <div class="prob-label">Parkinson's Disease Probability</div>
+      <div class="prob-track">
+        <div class="prob-fill ${cls}" style="width:${prob}%"></div>
+      </div>
+      <div class="prob-number">${prob}%</div>
+      <div class="prob-sub">Based on 16 extracted voice biomarkers (Praat) · SVC model</div>
+    </div>`;
+}
+
+/* ── Build top features table ─────────── */
+function buildTopFeats(feats) {
+  if (!feats || !feats.length) return "";
+  const max = Math.max(...feats.map(f => f.impact));
+  const rows = feats.map(f => {
+    const w = Math.round((f.impact / max) * 80);
+    return `<tr>
+      <td style="font-weight:600">${f.feature}</td>
+      <td>
+        <div class="impact-bar-wrap"><div class="impact-bar" style="width:${w}px"></div></div>
+        ${(f.impact * 100).toFixed(1)}%
+      </td>
+    </tr>`;
+  }).join("");
+  return `
+    <div class="section-title">📊 Top Influencing Voice Features</div>
+    <table class="feat-table">
+      <thead><tr><th>Feature</th><th>Model Importance</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+/* ── Build full biomarkers table ───────── */
+function buildBioTable(analysis, extracted) {
+  const data = analysis && analysis.length ? analysis
+    : extracted ? Object.entries(extracted).map(([feature, value]) => ({ feature, value, importance: 0 }))
+    : [];
+  if (!data.length) return "";
+  const maxImp = Math.max(...data.map(d => d.importance || 0), 0.001);
+  const rows = data.map(d => {
+    const w = Math.round(((d.importance || 0) / maxImp) * 60);
+    return `<tr>
+      <td>${d.feature}</td>
+      <td class="bio-val">${parseFloat(d.value).toFixed(6)}</td>
+      <td>
+        ${d.importance ? `<div class="impact-bar-wrap"><div class="impact-bar" style="width:${w}px"></div></div>${(d.importance*100).toFixed(1)}%` : '—'}
+      </td>
+    </tr>`;
+  }).join("");
+  return `
+    <details style="margin-top:16px;" open>
+      <summary>🔬 All 16 Extracted Voice Biomarkers</summary>
+      <p style="font-size:11.5px;color:#888;margin:4px 0 8px;">
+        These values were extracted from your voice file and fed directly into the DBN model.
+      </p>
+      <table class="bio-table">
+        <thead><tr><th>Biomarker</th><th>Extracted Value</th><th>Importance</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </details>`;
+}
+
+/* ── Render result card ─────────────────── */
+function renderCard(r, expand) {
+  const key = storeResult(r);
+  const cls  = bc(r.risk_level);
+  const icon = r.risk_level === "High" ? "🔴" : r.risk_level === "Medium" ? "🟡" : "🟢";
+  const rec  = r.recordings ? `<p><strong>File(s) analysed:</strong> ${r.recordings}</p>` : "";
+  const mTag = r.model_label ? `<span class="model-tag">🤖 ${r.model_label}</span>` : "";
+  const prob = buildProb(r.probability, r.risk_level);
+  const top  = buildTopFeats(r.top_features);
+  const bio  = buildBioTable(r.feature_analysis || [], r.extracted_features || {});
+  const bodyClass = expand ? "result-body open" : "result-body";
+
+  return `
+    <div class="result-card">
+      <div class="result-header ${cls}" onclick="toggleBody(this)">
+        <div>
+          <div class="result-title">${icon} ${r.person} &mdash; ${r.result}</div>
+          <div class="result-subtitle">${r.probability}% probability ${mTag}</div>
+        </div>
+        <span class="badge ${cls}">${r.risk_level} Risk</span>
+      </div>
+      <div class="${bodyClass}">
+        ${prob}
+        ${rec}
+        <div class="doctor-box ${cls}">
+          <strong>🩺 Doctor Suggestion</strong>
+          ${r.doctor_suggestion}
+        </div>
+        ${top}
+        ${bio}
+        <button class="dl-btn" onclick="downloadReport('${key}')">📄 Download Full Report</button>
+      </div>
+    </div>`;
+}
+
+function toggleBody(header) {
+  const body = header.nextElementSibling;
+  body.classList.toggle("open");
+}
+
+/* ── Download report ───────────────────── */
+function downloadReport(key) {
+  const r = RESULTS[key];
+  if (!r) { alert("Report data not found. Please run a prediction first."); return; }
+  fetch(`${API}/download_report`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(r)
+  })
+  .then(res => { if (!res.ok) throw new Error("HTTP " + res.status); return res.blob(); })
+  .then(blob => {
+    const url = URL.createObjectURL(blob);
+    const a = Object.assign(document.createElement("a"), {
+      href: url, download: (r.person || "report").replace(/\s+/g,"_") + "_Parkinson_Report.txt"
+    });
+    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  })
+  .catch(e => alert("Download error: " + e.message));
+}
+
+/* ── CSV Upload ─────────────────────────── */
+function uploadFile() {
+  const fi = document.getElementById("fileInput");
+  const rd = document.getElementById("results");
+  if (!fi.files.length) { alert("Please select a CSV file first."); return; }
+  const fd = new FormData();
+  fd.append("file", fi.files[0]);
+  setStatus("⏳ Processing CSV through DBN model…", "info");
+  rd.innerHTML = "";
+  fetch(`${API}/predict`, { method:"POST", body:fd })
+    .then(r => r.json())
+    .then(data => {
+      if (data.error) { setStatus("❌ " + data.error, "error"); return; }
+      setStatus(
+        `✅ Analysed <strong>${data.total_people}</strong> person(s) from
+         <strong>${data.total_recordings}</strong> row(s) using <strong>${data.model_label || "DBN"}</strong>.`,
+        "success"
+      );
+      data.results.forEach((r, i) => {
+        r.model_label = data.model_label || "DBN";
+        rd.innerHTML += renderCard(r, false);
+        saveToHistory(r, "csv");
+      });
+    })
+    .catch(e => setStatus("❌ Cannot reach server — is the backend running? (" + e.message + ")", "error"));
+}
+
+/* ── WAV file upload (Option 2) ───────────────── */
+let pipeTimer;
+
+function setWavStatus(msg, cls) {
+  const el = document.getElementById("wavStatus");
+  if (el) { el.className = "wav-status " + (cls || ""); el.innerText = msg || ""; }
+}
+
+const PIPE_STEPS = ["ps1","ps2","ps3","ps4","ps5","ps6"];
+
+function startPipeAnim() {
+  document.getElementById("pipelineStatus").style.display = "block";
+  PIPE_STEPS.forEach(id => document.getElementById(id).className = "pipe-item");
+  let i = 0;
+  pipeTimer = setInterval(() => {
+    if (i > 0) document.getElementById(PIPE_STEPS[i-1]).className = "pipe-item done";
+    if (i < PIPE_STEPS.length) {
+      document.getElementById(PIPE_STEPS[i]).className = "pipe-item active";
+      i++;
+    } else { clearInterval(pipeTimer); }
+  }, 420);
+}
+
+function finishPipeAnim() {
+  clearInterval(pipeTimer);
+  PIPE_STEPS.forEach(id => document.getElementById(id).className = "pipe-item done");
+}
+
+/* ── WAV file upload (Option 2) ───────────────── */
+
+function submitWavFile() {
+  const input = document.getElementById("wavFileInput");
+  const file  = input && input.files && input.files[0];
+  if (!file) {
+    setWavStatus("⚠️ Please choose a WAV file first.", "error");
+    return;
+  }
+
+  setWavStatus("⏳ Uploading and analysing…", "analysing");
+  setStatus("⏳ Running voice biomarker analysis…", "info");
+  startPipeAnim();
+
+  const btn = document.getElementById("wavAnalyseBtn");
+  btn.disabled = true;
+  document.getElementById("results").innerHTML = "";
+
+  const fd = new FormData();
+  fd.append("file", file, file.name);
+
+  fetch(`${API}/predict_mic`, { method: "POST", body: fd })
+    .then(r => r.json())
+    .then(data => {
+      finishPipeAnim();
+      btn.disabled = false;
+
+      if (data.error) {
+        setWavStatus("⚠️ " + data.error, "error");
+        setStatus("❌ " + data.error, "error");
+        return;
+      }
+
+      const n = data.recordings || 1;
+      setWavStatus("✅ Analysis complete — " + n + " file(s) analysed.", "done");
+      const cls  = bc(data.risk_level);
+      const icon = data.risk_level === "High" ? "🔴" : data.risk_level === "Medium" ? "🟡" : "🟢";
+      setStatus(
+        `${icon} Voice analysis complete &nbsp;—&nbsp; <strong>${data.result}</strong>
+         &nbsp;<span class="badge ${cls}">${data.risk_level} Risk</span>
+         &nbsp; Confidence: <strong>${data.probability}%</strong>`,
+        "success"
+      );
+      const r = {
+        person:             "WAV File: " + file.name,
+        result:             data.result,
+        risk_level:         data.risk_level,
+        probability:        data.probability,
+        doctor_suggestion:  data.doctor_suggestion,
+        model_label:        data.model_label || "DBN",
+        recordings:        n,
+        top_features:      data.top_features      || [],
+        extracted_features: data.extracted_features || {},
+        feature_analysis:   data.feature_analysis  || []
+      };
+      document.getElementById("results").innerHTML = renderCard(r, true);
+      saveToHistory(r, "wav");
+    })
+    .catch(err => {
+      finishPipeAnim();
+      btn.disabled = false;
+      setWavStatus("⚠️ Error: " + err.message, "error");
+      setStatus("❌ " + err.message, "error");
+    });
+}
+
+/* ── HISTORY FUNCTIONS ──────────────────── */
+
+function saveToHistory(r, source) {
+  const record = {
+    person:       r.person || "Unknown",
+    result:       r.result,
+    risk_level:   r.risk_level,
+    probability:  r.probability,
+    doctor_suggestion: r.doctor_suggestion || "",
+    model_label:  r.model_label || "DBN",
+    source:       source,
+    timestamp:    new Date().toISOString()
+  };
+  fetch(`${API}/history`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(record)
+  })
+  .then(res => res.json())
+  .catch(err => console.warn("History save failed:", err));
+}
+
+// Ensure the page initializes smoothly
+document.addEventListener("DOMContentLoaded", function() {
+  // Setup logic here if needed
+});
+</script>
+</body>
+</html>

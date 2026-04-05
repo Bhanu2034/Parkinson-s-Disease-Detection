@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Model Analysis – ParkinsonAI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root { --blue:#1e90ff; --dark:#0b3c5d; }
+    body { background:#f0f4fb; }
+
+    .page-header {
+      background: linear-gradient(135deg,#072a44,#0d4f8a);
+      color:#fff; padding:32px 40px; margin-bottom:28px;
+      border-radius:0 0 24px 24px;
+    }
+    .page-header h1 { margin:0 0 6px; font-size:26px; font-weight:800; color:#ffffff; text-shadow:0 1px 4px rgba(0,0,0,.4); }
+    .page-header p  { margin:0; font-size:14px; color:#e8f4ff; }
+
+    .analysis-container { max-width:1200px; margin:0 auto; padding:0 20px 60px; }
+
+    /* ── Best model banner ── */
+    .best-banner {
+      background:linear-gradient(135deg,#1e90ff,#0b6fcc); color:#fff;
+      border-radius:18px; padding:24px 32px; margin-bottom:28px;
+      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;
+      box-shadow:0 6px 28px rgba(30,144,255,.35);
+    }
+    .best-banner .title { font-size:12px; color:rgba(255,255,255,.95); margin-bottom:5px; text-transform:uppercase; letter-spacing:1px; }
+    .best-banner .name  { font-size:24px; font-weight:800; }
+    .best-banner .stats { display:flex; gap:14px; flex-wrap:wrap; }
+    .stat-box { background:rgba(255,255,255,.18); border-radius:12px; padding:12px 20px; text-align:center; min-width:80px; }
+    .stat-box .sv { font-size:22px; font-weight:800; }
+    .stat-box .sl { font-size:11px; color:rgba(255,255,255,.9); margin-top:2px; }
+
+    /* ── Cards ── */
+    .card { background:#fff; border-radius:20px; box-shadow:0 4px 20px rgba(0,0,0,.08); padding:28px; margin-bottom:24px; }
+    .card h2 { margin:0 0 18px; color:var(--dark); font-size:17px; display:flex; align-items:center; gap:8px; font-weight:700; }
+
+    /* ── Tabs ── */
+    .tabs { display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap; }
+    .tab-btn {
+      padding:9px 20px; border:2px solid var(--blue); border-radius:22px;
+      background:#fff; color:var(--blue); font-weight:600; font-size:13px;
+      cursor:pointer; transition:.2s;
+    }
+    .tab-btn.active, .tab-btn:hover { background:var(--blue); color:#fff; }
+
+    /* ── Chart grids ── */
+    .chart-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
+    .chart-grid-1 { display:grid; grid-template-columns:1fr; gap:20px; margin-bottom:20px; }
+    @media(max-width:760px) { .chart-grid-2 { grid-template-columns:1fr; } }
+    .chart-box { background:#fff; border-radius:18px; padding:22px; box-shadow:0 4px 18px rgba(0,0,0,.07); }
+    .chart-box h3 { margin:0 0 16px; font-size:14px; color:var(--dark); font-weight:700; }
+
+    /* ── Metrics table ── */
+    .metrics-table { width:100%; border-collapse:collapse; font-size:13px; }
+    .metrics-table th { background:var(--dark); color:#fff; padding:11px 14px; text-align:left; }
+    .metrics-table th:first-child { border-radius:0; }
+    .metrics-table td { padding:10px 14px; border-bottom:1px solid #f2f2f2; vertical-align:middle; }
+    .metrics-table tr:hover td { background:#f5f8ff; }
+    .metrics-table tr.best-row td { background:#e8f8ee; font-weight:700; }
+    .metrics-table tr.best-row td:first-child::after { content:" 🏆"; }
+    .group-base     { border-left:4px solid #9e9e9e; }
+    .group-proposed { border-left:4px solid #1e90ff; }
+    .group-paper    { border-left:4px solid #ff9800; }
+
+    .acc-bar-wrap { display:inline-block; width:70px; height:8px; background:#e0e0e0; border-radius:4px; vertical-align:middle; margin-right:6px; overflow:hidden; }
+    .acc-bar { height:100%; border-radius:4px; }
+    .acc-bar.base     { background:linear-gradient(90deg,#9e9e9e,#bdbdbd); }
+    .acc-bar.proposed { background:linear-gradient(90deg,#1e90ff,#64b5f6); }
+    .acc-bar.paper    { background:linear-gradient(90deg,#ff9800,#ffcc80); }
+
+    .group-badge {
+      display:inline-block; font-size:10px; font-weight:700; padding:2px 9px;
+      border-radius:10px; white-space:nowrap;
+    }
+    .group-badge.base     { background:#f0f0f0; color:#777; }
+    .group-badge.proposed { background:#e8f4ff; color:#1e6fa8; }
+    .group-badge.paper    { background:#fff3e0; color:#e65100; }
+
+    /* ── Images ── */
+    .img-card img { width:100%; border-radius:10px; border:1px solid #eee; margin-top:8px; }
+
+    /* ── Legend dot ── */
+    .ldot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:5px; vertical-align:middle; }
+
+    /* ── Summary cards ── */
+    .summary-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:16px; margin-bottom:24px; }
+    .sum-card { background:#fff; border-radius:16px; padding:20px; box-shadow:0 3px 14px rgba(0,0,0,.07); text-align:center; }
+    .sum-card .sv { font-size:26px; font-weight:800; color:var(--blue); }
+    .sum-card .sl { font-size:12px; color:#777; margin-top:5px; }
+    .sum-card.best { border-top:4px solid #28a745; }
+    .sum-card.best .sv { color:#28a745; }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="nav-left">
+    <button type="button" class="hamburger" id="navToggle" aria-label="Open menu">☰</button>
+    <div class="logo">🧠 ParkinsonAI</div>
+  </div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Voice Lab</a>
+    <a href="history.html">History</a>
+    <a href="analysis.html">Analysis</a>
+  </div>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+<aside class="sidebar" id="sidebar" aria-hidden="true">
+  <button type="button" class="sidebar-close" id="sidebarClose" aria-label="Close menu">×</button>
+  <nav class="sidebar-nav">
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Voice Lab</a>
+    <a href="history.html">History</a>
+    <a href="analysis.html">Analysis</a>
+  </nav>
+</aside>
+<script>
+(function(){
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('sidebarOverlay');
+  var openBtn = document.getElementById('navToggle');
+  var closeBtn = document.getElementById('sidebarClose');
+  function openSidebar(){ if(sidebar){ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); } if(overlay){ overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); } }
+  function closeSidebar(){ if(sidebar){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } if(overlay){ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); } }
+  if(openBtn) openBtn.addEventListener('click', openSidebar);
+  if(closeBtn) closeBtn.addEventListener('click', closeSidebar);
+  if(overlay) overlay.addEventListener('click', closeSidebar);
+  var links = document.querySelectorAll('.sidebar-nav a');
+  for(var i=0;i<links.length;i++) links[i].addEventListener('click', closeSidebar);
+})();
+</script>
+
+<div class="page-header">
+  <h1>📊 How Our AI Models Perform</h1>
+  <p>We tested 21 different AI models to find the best one for detecting Parkinson's disease from voice — here's how they compare.</p>
+</div>
+
+<div class="analysis-container">
+
+  <!-- Best model banner -->
+  <div class="best-banner" id="bestBanner">
+    <div>
+      <div class="title">🏆 Top Performing Model</div>
+      <div class="name" id="bestName">Loading…</div>
+    </div>
+    <div class="stats" id="bestStats"></div>
+  </div>
+
+  <!-- Summary cards row -->
+  <div class="summary-grid" id="summaryGrid"></div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('overview')">📈 Overview</button>
+    <button class="tab-btn" onclick="showTab('detail')">🔍 Deep Dive</button>
+    <button class="tab-btn" onclick="showTab('table')">📋 All Numbers</button>
+    <button class="tab-btn" onclick="showTab('images')">🖼️ Training Results</button>
+  </div>
+
+  <!-- Tab: Overview -->
+  <div id="tab-overview">
+    <div style="background:#fff;border-radius:16px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);border-left:4px solid #1e90ff;">
+      <p style="margin:0;font-size:14px;color:#444;line-height:1.7;">💡 <strong>What you're seeing:</strong> We trained 21 AI models on voice recordings from real patients. <strong>Accuracy</strong> = how often the model gets it right. <strong>AUC</strong> = how well it separates healthy from Parkinson's voices (higher = better). Our <strong>DBN model</strong> (green bar) is the one we use in the app.</p>
+    </div>
+    <div class="chart-grid-2">
+      <div class="chart-box">
+        <h3>📊 Accuracy — How Often Each Model Is Correct</h3>
+        <canvas id="chartAcc"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>📈 AUC — How Well Each Model Distinguishes PD vs Healthy</h3>
+        <canvas id="chartAuc"></canvas>
+      </div>
+    </div>
+    <div class="chart-grid-2">
+      <div class="chart-box">
+        <h3>🎯 Our Deep Learning Models — All-Round Performance</h3>
+        <p style="font-size:12px;color:#888;margin:-6px 0 12px;">Bigger shape = better across all metrics</p>
+        <canvas id="chartRadar"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>⚖️ Can It Catch PD? Can It Avoid False Alarms?</h3>
+        <p style="font-size:12px;color:#888;margin:-6px 0 12px;">Precision (avoid false alarms) · Sensitivity (catch real cases) · F1 (balance of both)</p>
+        <canvas id="chartGroup"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Detail -->
+  <div id="tab-detail" style="display:none">
+    <div style="background:#fff;border-radius:16px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);border-left:4px solid #ff9800;">
+      <p style="margin:0;font-size:14px;color:#444;line-height:1.7;">🔍 <strong>Going deeper:</strong> <strong>Sensitivity</strong> = percentage of real PD cases the model catches. <strong>Specificity</strong> = percentage of healthy people correctly identified. <strong>F1 Score</strong> = the overall balance between catching PD and avoiding false positives.</p>
+    </div>
+    <div class="chart-grid-2">
+      <div class="chart-box">
+        <h3>🏅 Standard Models — Accuracy vs Reliability</h3>
+        <p style="font-size:12px;color:#888;margin:-6px 0 12px;">Top-right corner = best (high accuracy + reliable results)</p>
+        <canvas id="chartBaseScatter"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>🧠 Deep Learning — Catching PD vs Avoiding False Alarms</h3>
+        <p style="font-size:12px;color:#888;margin:-6px 0 12px;">Top-right corner = ideal (catches most PD + few false alarms)</p>
+        <canvas id="chartSenSpec"></canvas>
+      </div>
+    </div>
+    <div class="chart-grid-1">
+      <div class="chart-box">
+        <h3>📉 F1 Score — Overall Effectiveness of Each Model</h3>
+        <p style="font-size:12px;color:#888;margin:-6px 0 12px;">Higher F1 = model is good at both catching PD and not raising false alarms</p>
+        <canvas id="chartF1"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Table -->
+  <div id="tab-table" style="display:none">
+    <div class="card">
+      <h2>📋 Full Results — All 21 Models Compared</h2>
+      <p style="font-size:13px;color:#555;margin:-10px 0 14px;line-height:1.7;">
+        Each row is one AI model we tested. Higher numbers = better performance. Our chosen model (DBN) is highlighted with 🏆.
+      </p>
+      <p style="font-size:12px;color:#888;margin:0 0 14px;">
+        <span class="ldot" style="background:#9e9e9e"></span> Standard Models &nbsp;
+        <span class="ldot" style="background:#1e90ff"></span> Our Deep Learning Models
+      </p>
+      <div style="overflow-x:auto;">
+        <table class="metrics-table" id="metricsTable">
+          <thead>
+            <tr>
+              <th>#</th><th>Model Name</th><th>Type</th>
+              <th>Accuracy</th><th>AUC</th>
+              <th>F1 Score</th><th>Precision</th>
+              <th>Sensitivity</th><th>Specificity</th>
+            </tr>
+          </thead>
+          <tbody id="metricsBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab: Images -->
+  <div id="tab-images" style="display:none">
+    <div style="background:#fff;border-radius:16px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);border-left:4px solid #28a745;">
+      <p style="margin:0;font-size:14px;color:#444;line-height:1.7;">🖼️ <strong>Training outputs:</strong> These graphs were generated during model training. They show how each model performed across multiple test rounds — giving confidence that results are consistent.</p>
+    </div>
+    <div class="chart-grid-2">
+      <div class="card img-card">
+        <h2>📊 Which Model Has the Highest Accuracy?</h2>
+        <img src="/static/images/accuracy_comparison.png" alt="Accuracy Comparison">
+      </div>
+      <div class="card img-card">
+        <h2>📈 ROC Curves — How Well Models Separate PD from Healthy</h2>
+        <img src="/static/images/roc_curves.png" alt="ROC Curves">
+      </div>
+    </div>
+    <div class="card img-card">
+      <h2>📦 How Consistent Are Our Deep Learning Models?</h2>
+      <p style="font-size:13px;color:#777;margin:-8px 0 12px;">Each box shows the spread of results across 10 test rounds. Smaller box = more consistent.</p>
+      <img src="/static/images/boxplot_proposed_models.png" alt="Boxplot Proposed Models">
+    </div>
+  </div>
+
+</div><!-- /analysis-container -->
+
+<script>
+// Backend runs on port 5001
+const API = "http://127.0.0.1:5001";
+
+/* ── Tab switching ── */
+const TAB_NAMES = ["overview","detail","table","images"];
+function showTab(name) {
+  TAB_NAMES.forEach(t => {
+    document.getElementById("tab-"+t).style.display = t === name ? "block" : "none";
+  });
+  document.querySelectorAll(".tab-btn").forEach((b,i) => {
+    b.classList.toggle("active", TAB_NAMES[i] === name);
+  });
+}
+
+/* ── Colors ── */
+const C = {
+  base:    { bg:"rgba(158,158,158,.75)",   border:"#757575" },
+  paper:   { bg:"rgba(255,152,0,.80)",     border:"#e65100" },
+  proposed:{ bg:"rgba(30,144,255,.80)",    border:"#0b3c5d" },
+  best:    { bg:"rgba(40,167,69,.90)",      border:"#1a5c28" },
+};
+
+const OUR_MODEL = "DBN (Proposed)"; // always highlight our proposed model
+
+function colorOf(d, bestModel) {
+  if (d.Model === OUR_MODEL)  return C.best;          // our model: green
+  if (d.Model === bestModel && d.Model !== OUR_MODEL)
+                               return { bg:"rgba(255,193,7,.85)", border:"#856404" }; // overall best: amber
+  if (d.Group === "Proposed") return C.proposed;
+  return C.base;
+}
+
+/* ── Load data ── */
+fetch(`${API}/model_results`)
+  .then(r => r.json())
+  .then(render)
+  .catch(() => {
+    fetch("/static/model_results.json").then(r=>r.json()).then(render).catch(()=>{
+      document.getElementById("bestName").innerText = "DBN (Proposed) — 92.31%";
+    });
+  });
+
+function render(data) {
+  const proposed  = data.filter(d => d.Group === "Proposed");
+  const overall   = data.reduce((a,b) => a.Accuracy >= b.Accuracy ? a : b);
+  // Always banner our proposed DBN
+  const ourModel  = data.find(d => d.Model === OUR_MODEL) || overall;
+
+  renderBanner(ourModel, overall);
+  renderSummary(data, ourModel, overall);
+  renderAccChart(data, overall.Model);
+  renderAucChart(data, overall.Model);
+  renderRadar(proposed, ourModel.Model);
+  renderGroupChart(data, ourModel.Model);
+  renderBaseScatter(data.filter(d=>d.Group==="Base"), overall.Model);
+  renderSenSpec(proposed, ourModel.Model);
+  renderF1Chart(data, ourModel.Model);
+  renderTable(data, ourModel.Model);
+}
+
+/* ── Banner — always shows our proposed DBN, notes overall best ── */
+function renderBanner(ourModel, overall) {
+  const note = ourModel.Model !== overall.Model
+    ? `<div style="font-size:12px;opacity:.8;margin-top:6px;">Overall best accuracy: ${overall.Model} (${(overall.Accuracy*100).toFixed(2)}%)</div>`
+    : '';
+  document.getElementById("bestName").innerHTML = ourModel.Model + note;
+  document.getElementById("bestStats").innerHTML = [
+    ["Accuracy",    (ourModel.Accuracy*100).toFixed(2)+"%"],
+    ["AUC",         (ourModel.AUC*100).toFixed(2)+"%"],
+    ["F1",          (ourModel.F1*100).toFixed(2)+"%"],
+    ["Sensitivity", (ourModel.Sensitivity*100).toFixed(1)+"%"],
+    ["Specificity", (ourModel.Specificity*100).toFixed(1)+"%"],
+  ].map(([l,v]) => `<div class="stat-box"><div class="sv">${v}</div><div class="sl">${l}</div></div>`).join("");
+}
+
+/* ── Summary grid ── */
+function renderSummary(data, ourModel, overall) {
+  const proposed = data.filter(d=>d.Group==="Proposed");
+  const avgBase  = avg(data.filter(d=>d.Group==="Base"), "Accuracy");
+  const avgProp  = avg(proposed, "Accuracy");
+  document.getElementById("summaryGrid").innerHTML = [
+    {label:"Total Models",       val:data.length,                                  icon:"🔢", cls:""},
+    {label:"DBN (Our Model) Acc",val:(ourModel.Accuracy*100).toFixed(2)+"%",       icon:"🎯", cls:"best"},
+    {label:"DBN AUC",            val:(ourModel.AUC*100).toFixed(2)+"%",            icon:"📈", cls:"best"},
+    {label:"Proposed Models",    val:proposed.length,                               icon:"🧠", cls:""},
+    {label:"Avg Base Acc",       val:(avgBase*100).toFixed(1)+"%",                  icon:"📊", cls:""},
+    {label:"Avg Proposed Acc",   val:(avgProp*100).toFixed(1)+"%",                  icon:"⚡", cls:""},
+  ].map(c=>`
+    <div class="sum-card ${c.cls}">
+      <div style="font-size:28px">${c.icon}</div>
+      <div class="sv">${c.val}</div>
+      <div class="sl">${c.label}</div>
+    </div>`).join("");
+}
+function avg(arr, key) { return arr.reduce((s,d)=>s+d[key],0)/arr.length; }
+
+/* ── Acc bar chart ── */
+function renderAccChart(data, bestModel) {
+  const bgs  = data.map(d => colorOf(d,bestModel).bg);
+  const brs  = data.map(d => colorOf(d,bestModel).border);
+  new Chart(document.getElementById("chartAcc"), {
+    type:"bar",
+    data:{ labels:data.map(d=>shortLabel(d.Model)),
+      datasets:[{ label:"Accuracy (%)", data:data.map(d=>+(d.Accuracy*100).toFixed(2)),
+        backgroundColor:bgs, borderColor:brs, borderWidth:1.5, borderRadius:5 }]
+    },
+    options:{
+      plugins:{ legend:{display:false},
+        tooltip:{ callbacks:{ label: ctx=>` ${ctx.parsed.y}%` } } },
+      scales:{ y:{ min:75, max:100, ticks:{callback:v=>v+"%"} } }
+    }
+  });
+}
+
+/* ── AUC chart ── */
+function renderAucChart(data, bestModel) {
+  const bgs = data.map(d => colorOf(d,bestModel).bg);
+  new Chart(document.getElementById("chartAuc"), {
+    type:"bar",
+    data:{ labels:data.map(d=>shortLabel(d.Model)),
+      datasets:[{ label:"AUC (%)", data:data.map(d=>+(d.AUC*100).toFixed(2)),
+        backgroundColor:bgs, borderRadius:5 }]
+    },
+    options:{
+      plugins:{ legend:{display:false},
+        tooltip:{ callbacks:{ label: ctx=>` ${ctx.parsed.y}%` } } },
+      scales:{ y:{ min:70, max:101, ticks:{callback:v=>v+"%"} } }
+    }
+  });
+}
+
+/* ── Radar (proposed) ── */
+function renderRadar(proposed, bestModel) {
+  const metrics = ["Accuracy","AUC","F1","Precision","Sensitivity","Specificity"];
+  const datasets = proposed.map(d => ({
+    label: d.Model,
+    data: metrics.map(m => +(d[m]*100).toFixed(1)),
+    borderWidth: d.Model === bestModel ? 3 : 1.5,
+    borderColor: d.Model === bestModel ? C.best.border : C.proposed.border,
+    backgroundColor: d.Model === bestModel ? "rgba(40,167,69,.15)" : "rgba(30,144,255,.07)",
+    pointRadius: d.Model === bestModel ? 4 : 2,
+  }));
+  new Chart(document.getElementById("chartRadar"), {
+    type:"radar",
+    data:{ labels:metrics, datasets },
+    options:{
+      scales:{ r:{ min:70, max:100, ticks:{display:false} } },
+      plugins:{ legend:{ position:"bottom", labels:{ font:{size:10} } } }
+    }
+  });
+}
+
+/* ── Grouped bar: Prec/Sens/F1 ── */
+function renderGroupChart(data, bestModel) {
+  const mk = (key, clr) => ({
+    label: key, borderRadius:4,
+    data: data.map(d => +(d[key]*100).toFixed(2)),
+    backgroundColor: clr,
+  });
+  new Chart(document.getElementById("chartGroup"), {
+    type:"bar",
+    data:{ labels:data.map(d=>shortLabel(d.Model)), datasets:[
+      mk("Precision",   "rgba(30,144,255,.8)"),
+      mk("Sensitivity", "rgba(255,152,0,.8)"),
+      mk("F1",          "rgba(40,167,69,.8)"),
+    ]},
+    options:{
+      plugins:{ legend:{ position:"bottom", labels:{font:{size:11}} } },
+      scales:{ y:{ min:55, max:101, ticks:{callback:v=>v+"%"} } }
+    }
+  });
+}
+
+/* ── Scatter: Accuracy vs AUC for base ── */
+function renderBaseScatter(data, bestModel) {
+  const datasets = data.map(d => ({
+    label: d.Model,
+    data: [{ x: +(d.Accuracy*100).toFixed(2), y: +(d.AUC*100).toFixed(2) }],
+    backgroundColor: colorOf(d,bestModel).bg,
+    borderColor: colorOf(d,bestModel).border,
+    borderWidth:1.5, pointRadius:7, pointHoverRadius:9,
+  }));
+  new Chart(document.getElementById("chartBaseScatter"), {
+    type:"scatter",
+    data:{ datasets },
+    options:{
+      plugins:{ legend:{ position:"bottom", labels:{font:{size:10}} } },
+      scales:{
+        x:{ min:75, max:102, title:{ display:true, text:"Accuracy (%)" } },
+        y:{ min:75, max:102, title:{ display:true, text:"AUC (%)" } }
+      }
+    }
+  });
+}
+
+/* ── Sensitivity vs Specificity ── */
+function renderSenSpec(proposed, bestModel) {
+  const datasets = proposed.map(d => ({
+    label: d.Model,
+    data:[{ x:+(d.Sensitivity*100).toFixed(1), y:+(d.Specificity*100).toFixed(1) }],
+    backgroundColor: colorOf(d,bestModel).bg,
+    borderColor: colorOf(d,bestModel).border,
+    borderWidth:1.5, pointRadius:7, pointHoverRadius:9,
+  }));
+  new Chart(document.getElementById("chartSenSpec"), {
+    type:"scatter",
+    data:{ datasets },
+    options:{
+      plugins:{ legend:{ position:"bottom", labels:{font:{size:10}} } },
+      scales:{
+        x:{ min:75, max:101, title:{ display:true, text:"Sensitivity (%)" } },
+        y:{ min:70, max:101, title:{ display:true, text:"Specificity (%)" } }
+      }
+    }
+  });
+}
+
+/* ── F1 chart ── */
+function renderF1Chart(data, bestModel) {
+  const bgs = data.map(d => colorOf(d,bestModel).bg);
+  new Chart(document.getElementById("chartF1"), {
+    type:"bar",
+    data:{ labels:data.map(d=>d.Model),
+      datasets:[{ label:"F1 Score (%)", data:data.map(d=>+(d.F1*100).toFixed(2)),
+        backgroundColor:bgs, borderRadius:5 }]
+    },
+    options:{
+      plugins:{ legend:{display:false},
+        tooltip:{ callbacks:{ label:ctx=>` ${ctx.parsed.y}%` } } },
+      scales:{ y:{ min:75, max:101, ticks:{callback:v=>v+"%"} } }
+    }
+  });
+}
+
+/* ── Metrics table ── */
+function renderTable(data, ourModelName) {
+  // sort: Base first, then Proposed
+  const sorted = [...data.filter(d=>d.Group==="Base"), ...data.filter(d=>d.Group==="Proposed")];
+  const body = document.getElementById("metricsBody");
+  body.innerHTML = sorted.map((d,i) => {
+    const isOurs  = d.Model === ourModelName;
+    const grpKey  = d.Group==="Proposed" ? "proposed" : "base";
+    const cls     = `${isOurs?"best-row":""} group-${grpKey}`;
+    const accW    = Math.round(Math.max(0, (d.Accuracy - 0.70) / 0.30) * 70);
+    const badge   = `<span class="group-badge ${grpKey}">${grpKey==="proposed" ? "Proposed" : "Base"}</span>`;
+    const ourTag  = isOurs ? ` <span style="font-size:10px;background:#d4edda;color:#155724;padding:1px 7px;border-radius:8px;font-weight:700;">Our Model</span>` : "";
+    return `<tr class="${cls}">
+      <td style="color:#aaa;font-size:11px">${i+1}</td>
+      <td style="font-weight:600">${d.Model}${ourTag}</td>
+      <td>${badge}</td>
+      <td>
+        <div class="acc-bar-wrap"><div class="acc-bar ${grpKey}" style="width:${accW}px"></div></div>
+        ${(d.Accuracy*100).toFixed(2)}%
+      </td>
+      <td>${(d.AUC*100).toFixed(2)}%</td>
+      <td>${(d.F1*100).toFixed(2)}%</td>
+      <td>${(d.Precision*100).toFixed(2)}%</td>
+      <td>${(d.Sensitivity*100).toFixed(2)}%</td>
+      <td>${(d.Specificity*100).toFixed(1)}%</td>
+    </tr>`;
+  }).join("");
+}
+
+function shortLabel(name) {
+  const map = {
+    "Penalized Logistic Reg":   "LOGIS_PEN",
+    "Discriminant Analysis":    "DIS",
+    "ANN-1 Layer (DEEP1)":      "DEEP1",
+    "ANN-2 Layer (DEEP2)":      "DEEP2",
+    "ANN-3 Layer (DEEP3)":      "DEEP3",
+    "Deep Ensemble (DEEP_EN)":  "DEEP_EN",
+    "Random Forest":            "RF",
+    "Decision Tree":            "TREE",
+    "Autoencoder + Classifier": "AE+Clf",
+    "DBN (Proposed)":           "DBN ★",
+  };
+  return map[name] || name;
+}
+</script>
+</body>
+</html>

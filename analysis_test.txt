@@ -1,0 +1,43 @@
+MODEL: GradientBoostingClassifier
+FEATURES: 16
+Healthy samples: 48
+PD samples: 147
+
+=== FEATURE RANGES ===
+MDVP:Fo(Hz): healthy_mean=181.937771, pd_mean=145.180762
+MDVP:Fhi(Hz): healthy_mean=223.636750, pd_mean=188.441463
+MDVP:Flo(Hz): healthy_mean=145.207292, pd_mean=106.893558
+MDVP:Jitter(%): healthy_mean=0.003866, pd_mean=0.006989
+MDVP:Jitter(Abs): healthy_mean=0.000023, pd_mean=0.000051
+MDVP:RAP: healthy_mean=0.001925, pd_mean=0.003757
+MDVP:PPQ: healthy_mean=0.002056, pd_mean=0.003900
+Jitter:DDP: healthy_mean=0.005776, pd_mean=0.011273
+MDVP:Shimmer: healthy_mean=0.017615, pd_mean=0.033658
+MDVP:Shimmer(dB): healthy_mean=0.162958, pd_mean=0.321204
+Shimmer:APQ3: healthy_mean=0.009504, pd_mean=0.017676
+Shimmer:APQ5: healthy_mean=0.010509, pd_mean=0.020285
+MDVP:APQ: healthy_mean=0.013305, pd_mean=0.027600
+Shimmer:DDA: healthy_mean=0.028511, pd_mean=0.053027
+NHR: healthy_mean=0.011483, pd_mean=0.029211
+HNR: healthy_mean=24.678750, pd_mean=20.974048
+
+Healthy mean -> PD prob: 0.9950
+PD mean -> PD prob: 0.9994
+
+=== SCALER INFO ===
+MDVP:Fo(Hz): min=88.333000, max=260.105000, range=171.772000
+MDVP:Fhi(Hz): min=102.145000, max=592.030000, range=489.885000
+MDVP:Flo(Hz): min=65.476000, max=239.170000, range=173.694000
+MDVP:Jitter(%): min=0.001680, max=0.033160, range=0.031480
+MDVP:Jitter(Abs): min=0.000007, max=0.000260, range=0.000253
+MDVP:RAP: min=0.000680, max=0.021440, range=0.020760
+MDVP:PPQ: min=0.000920, max=0.019580, range=0.018660
+Jitter:DDP: min=0.002040, max=0.064330, range=0.062290
+MDVP:Shimmer: min=0.009540, max=0.119080, range=0.109540
+MDVP:Shimmer(dB): min=0.085000, max=1.302000, range=1.217000
+Shimmer:APQ3: min=0.004550, max=0.056470, range=0.051920
+Shimmer:APQ5: min=0.005700, max=0.079400, range=0.073700
+MDVP:APQ: min=0.007190, max=0.137780, range=0.130590
+Shimmer:DDA: min=0.013640, max=0.169420, range=0.155780
+NHR: min=0.000650, max=0.314820, range=0.314170
+HNR: min=8.441000, max=33.047000, range=24.606000

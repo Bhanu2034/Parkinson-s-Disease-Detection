@@ -1,0 +1,150 @@
+﻿
+Testing HEALTHY WAVs (30 files):
+--------------------------------------------------------------------------------
+  [OK   ] healthy_female_01.wav: prob=0.1198 -> Healthy
+         Fo=180.0  Jitter=0.001700  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_female_02.wav: prob=0.0395 -> Healthy
+         Fo=200.0  Jitter=0.001700  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_female_03.wav: prob=0.0408 -> Healthy
+         Fo=220.0  Jitter=0.001700  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_female_04.wav: prob=0.0431 -> Healthy
+         Fo=190.0  Jitter=0.001885  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_female_05.wav: prob=0.0312 -> Healthy
+         Fo=210.0  Jitter=0.001700  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_female_06.wav: prob=0.0406 -> Healthy
+         Fo=230.0  Jitter=0.001700  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_female_07.wav: prob=0.1034 -> Healthy
+         Fo=175.0  Jitter=0.001700  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_female_08.wav: prob=0.0241 -> Healthy
+         Fo=245.0  Jitter=0.001701  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_female_09.wav: prob=0.0476 -> Healthy
+         Fo=195.0  Jitter=0.001700  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_female_10.wav: prob=0.0309 -> Healthy
+         Fo=215.0  Jitter=0.001700  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_male_01.wav: prob=0.0960 -> Healthy
+         Fo=110.0  Jitter=0.001700  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_male_02.wav: prob=0.1418 -> Healthy
+         Fo=120.0  Jitter=0.001778  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_male_03.wav: prob=0.1240 -> Healthy
+         Fo=130.0  Jitter=0.001700  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_male_04.wav: prob=0.0313 -> Healthy
+         Fo=115.0  Jitter=0.002438  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_male_05.wav: prob=0.0776 -> Healthy
+         Fo=125.0  Jitter=0.001890  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_male_06.wav: prob=0.1311 -> Healthy
+         Fo=135.0  Jitter=0.001700  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_male_07.wav: prob=0.1911 -> Healthy
+         Fo=105.0  Jitter=0.002221  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_male_08.wav: prob=0.1112 -> Healthy
+         Fo=140.0  Jitter=0.002213  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_male_09.wav: prob=0.0824 -> Healthy
+         Fo=118.0  Jitter=0.001700  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_male_10.wav: prob=0.0793 -> Healthy
+         Fo=128.0  Jitter=0.001764  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_mic_01.wav: prob=0.1094 -> Healthy
+         Fo=150.0  Jitter=0.002756  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_mic_02.wav: prob=0.1716 -> Healthy
+         Fo=160.0  Jitter=0.003232  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_mic_03.wav: prob=0.1072 -> Healthy
+         Fo=170.0  Jitter=0.002333  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_mic_04.wav: prob=0.1668 -> Healthy
+         Fo=145.0  Jitter=0.003267  Shimmer=0.0095  HNR=30.8  NHR=0.000838
+  [OK   ] healthy_mic_05.wav: prob=0.1098 -> Healthy
+         Fo=155.0  Jitter=0.002543  Shimmer=0.0095  HNR=32.2  NHR=0.000650
+  [OK   ] healthy_mic_06.wav: prob=0.0684 -> Healthy
+         Fo=185.0  Jitter=0.003097  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_mic_07.wav: prob=0.1809 -> Healthy
+         Fo=140.0  Jitter=0.002849  Shimmer=0.0095  HNR=31.2  NHR=0.000753
+  [OK   ] healthy_mic_08.wav: prob=0.2124 -> Healthy
+         Fo=165.0  Jitter=0.003524  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+  [OK   ] healthy_mic_09.wav: prob=0.1057 -> Healthy
+         Fo=175.0  Jitter=0.002103  Shimmer=0.0095  HNR=31.9  NHR=0.000650
+  [OK   ] healthy_mic_10.wav: prob=0.0421 -> Healthy
+         Fo=190.0  Jitter=0.002523  Shimmer=0.0095  HNR=33.0  NHR=0.000650
+
+Testing PD WAVs (30 files):
+--------------------------------------------------------------------------------
+  [OK   ] pd_mild_01.wav: prob=0.9554 -> PD
+         Fo=140.0  Jitter=0.004976  Shimmer=0.0095  HNR=23.8  NHR=0.004180
+  [OK   ] pd_mild_02.wav: prob=0.9777 -> PD
+         Fo=155.0  Jitter=0.006190  Shimmer=0.0123  HNR=22.6  NHR=0.005546
+  [OK   ] pd_mild_03.wav: prob=0.9526 -> PD
+         Fo=165.0  Jitter=0.004435  Shimmer=0.0095  HNR=25.7  NHR=0.002665
+  [OK   ] pd_mild_04.wav: prob=0.9708 -> PD
+         Fo=148.0  Jitter=0.005965  Shimmer=0.0118  HNR=22.2  NHR=0.006070
+  [OK   ] pd_mild_05.wav: prob=0.9650 -> PD
+         Fo=170.0  Jitter=0.005062  Shimmer=0.0096  HNR=24.0  NHR=0.004003
+  [OK   ] pd_mild_06.wav: prob=0.9578 -> PD
+         Fo=132.0  Jitter=0.005759  Shimmer=0.0095  HNR=23.6  NHR=0.004378
+  [OK   ] pd_mild_07.wav: prob=0.9534 -> PD
+         Fo=158.0  Jitter=0.004272  Shimmer=0.0095  HNR=25.9  NHR=0.002572
+  [OK   ] pd_mild_08.wav: prob=0.9706 -> PD
+         Fo=142.0  Jitter=0.006588  Shimmer=0.0116  HNR=22.1  NHR=0.006169
+  [OK   ] pd_mild_09.wav: prob=0.9288 -> PD
+         Fo=174.9  Jitter=0.004591  Shimmer=0.0117  HNR=24.0  NHR=0.003995
+  [OK   ] pd_mild_10.wav: prob=0.9529 -> PD
+         Fo=128.0  Jitter=0.006520  Shimmer=0.0095  HNR=23.4  NHR=0.004559
+  [OK   ] pd_moderate_01.wav: prob=0.9768 -> PD
+         Fo=130.0  Jitter=0.006813  Shimmer=0.0152  HNR=19.9  NHR=0.010124
+  [OK   ] pd_moderate_02.wav: prob=0.9779 -> PD
+         Fo=140.0  Jitter=0.008156  Shimmer=0.0179  HNR=18.8  NHR=0.013056
+  [OK   ] pd_moderate_03.wav: prob=0.9815 -> PD
+         Fo=150.0  Jitter=0.005997  Shimmer=0.0133  HNR=21.1  NHR=0.007717
+  [OK   ] pd_moderate_04.wav: prob=0.9715 -> PD
+         Fo=135.0  Jitter=0.007352  Shimmer=0.0144  HNR=19.8  NHR=0.010531
+  [OK   ] pd_moderate_05.wav: prob=0.9801 -> PD
+         Fo=145.0  Jitter=0.008412  Shimmer=0.0191  HNR=18.0  NHR=0.015714
+  [OK   ] pd_moderate_06.wav: prob=0.9759 -> PD
+         Fo=160.1  Jitter=0.007048  Shimmer=0.0157  HNR=20.2  NHR=0.009598
+  [OK   ] pd_moderate_07.wav: prob=0.9585 -> PD
+         Fo=125.0  Jitter=0.009780  Shimmer=0.0145  HNR=18.6  NHR=0.013762
+  [OK   ] pd_moderate_08.wav: prob=0.9764 -> PD
+         Fo=155.0  Jitter=0.006503  Shimmer=0.0140  HNR=21.3  NHR=0.007476
+  [OK   ] pd_moderate_09.wav: prob=0.9756 -> PD
+         Fo=120.1  Jitter=0.008581  Shimmer=0.0145  HNR=19.8  NHR=0.010411
+  [OK   ] pd_moderate_10.wav: prob=0.9798 -> PD
+         Fo=164.9  Jitter=0.009703  Shimmer=0.0211  HNR=18.1  NHR=0.015528
+  [OK   ] pd_severe_01.wav: prob=0.9657 -> PD
+         Fo=130.0  Jitter=0.012991  Shimmer=0.0220  HNR=16.1  NHR=0.024384
+  [OK   ] pd_severe_02.wav: prob=0.9859 -> PD
+         Fo=140.0  Jitter=0.014515  Shimmer=0.0254  HNR=14.9  NHR=0.032159
+  [OK   ] pd_severe_03.wav: prob=0.9657 -> PD
+         Fo=119.9  Jitter=0.012930  Shimmer=0.0205  HNR=16.9  NHR=0.020510
+  [OK   ] pd_severe_04.wav: prob=0.9886 -> PD
+         Fo=135.3  Jitter=0.017349  Shimmer=0.0310  HNR=14.2  NHR=0.038115
+  [OK   ] pd_severe_05.wav: prob=0.9874 -> PD
+         Fo=150.0  Jitter=0.013919  Shimmer=0.0267  HNR=15.5  NHR=0.027894
+  [OK   ] pd_severe_06.wav: prob=0.9916 -> PD
+         Fo=115.0  Jitter=0.019459  Shimmer=0.0321  HNR=13.6  NHR=0.043975
+  [OK   ] pd_severe_07.wav: prob=0.9767 -> PD
+         Fo=145.0  Jitter=0.012735  Shimmer=0.0225  HNR=16.1  NHR=0.024543
+  [OK   ] pd_severe_08.wav: prob=0.9802 -> PD
+         Fo=125.1  Jitter=0.016969  Shimmer=0.0258  HNR=14.7  NHR=0.034169
+  [OK   ] pd_severe_09.wav: prob=0.9782 -> PD
+         Fo=154.9  Jitter=0.011305  Shimmer=0.0223  HNR=17.2  NHR=0.019022
+  [OK   ] pd_severe_10.wav: prob=0.9907 -> PD
+         Fo=109.9  Jitter=0.021769  Shimmer=0.0328  HNR=13.2  NHR=0.048017
+
+================================================================================
+SUMMARY
+================================================================================
+
+HEALTHY (30 files):
+  Correct: 30/30 (100%)
+  Prob range: 0.0241 - 0.2124
+  Prob mean:  0.0954
+
+PD (30 files):
+  Correct: 30/30 (100%)
+  Prob range: 0.9288 - 0.9916
+  Prob mean:  0.9717
+
+
+STANDALONE SAMPLES:
+--------------------------------------------------------------------------------
+  sample_01.wav: prob=0.9834 -> PD
+    Fo=164.8  Jitter=0.013993  Shimmer=0.0265  HNR=16.2
+  sample_02.wav: prob=0.9901 -> PD
+    Fo=162.2  Jitter=0.015652  Shimmer=0.0303  HNR=15.0
+  parkinsons_5sec.wav: prob=0.9329 -> PD
+    Fo=120.0  Jitter=0.005986  Shimmer=0.0601  HNR=19.0

@@ -1,0 +1,3 @@
+c:/Users/DELL/Desktop/parkinsons_hybrid_detection\Final_Parkinson_Proj-main\models\feature_names.pkl
+c:/Users/DELL/Desktop/parkinsons_hybrid_detection\Final_Parkinson_Proj-main\models\parkinson_model.pkl
+c:/Users/DELL/Desktop/parkinsons_hybrid_detection\Final_Parkinson_Proj-main\models\scaler.pkl

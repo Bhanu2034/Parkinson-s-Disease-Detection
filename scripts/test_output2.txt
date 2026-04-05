@@ -1,0 +1,93 @@
+﻿Model type: CalibratedClassifierCV
+Feature names (16): ['MDVP:Fo(Hz)', 'MDVP:Fhi(Hz)', 'MDVP:Flo(Hz)', 'MDVP:Jitter(%)', 'MDVP:Jitter(Abs)', 'MDVP:RAP', 'MDVP:PPQ', 'Jitter:DDP', 'MDVP:Shimmer', 'MDVP:Shimmer(dB)', 'Shimmer:APQ3', 'Shimmer:APQ5', 'MDVP:APQ', 'Shimmer:DDA', 'NHR', 'HNR']
+
+================================================================================
+ TESTING ALL WAV FILES - RAW MODEL vs APP.PY OVERRIDE LOGIC
+================================================================================
+
+--- HEALTHY SAMPLES (30 files) ---
+File                               Raw Prob  App Prob%   Override   #Healthy   Raw OK   App OK
+------------------------------------------------------------------------------------------
+  healthy_female_01.wav              0.1198       12.0         no         15       OK       OK
+  healthy_female_02.wav              0.0395        4.0         no         15       OK       OK
+  healthy_female_03.wav              0.0408        4.1         no         16       OK       OK
+  healthy_female_04.wav              0.0431        4.3         no         15       OK       OK
+  healthy_female_05.wav              0.0312        3.1         no         16       OK       OK
+  healthy_female_06.wav              0.0406        4.1         no         16       OK       OK
+  healthy_female_07.wav              0.1034       10.3         no         15       OK       OK
+  healthy_female_08.wav              0.0241        2.4         no         16       OK       OK
+  healthy_female_09.wav              0.0476        4.8         no         15       OK       OK
+  healthy_female_10.wav              0.0309        3.1         no         16       OK       OK
+  healthy_male_01.wav                0.0960        9.6         no         13       OK       OK
+  healthy_male_02.wav                0.1418       14.2         no         13       OK       OK
+  healthy_male_03.wav                0.1240       12.4         no         14       OK       OK
+  healthy_male_04.wav                0.0313        3.1         no         13       OK       OK
+  healthy_male_05.wav                0.0776        7.8         no         13       OK       OK
+  healthy_male_06.wav                0.1311       13.1         no         14       OK       OK
+  healthy_male_07.wav                0.1911       19.1         no         13       OK       OK
+  healthy_male_08.wav                0.1112       11.1         no         14       OK       OK
+  healthy_male_09.wav                0.0824        8.2         no         13       OK       OK
+  healthy_male_10.wav                0.0793        7.9         no         14       OK       OK
+  healthy_mic_01.wav                 0.1094       10.9         no         14       OK       OK
+  healthy_mic_02.wav                 0.1716       17.2         no         14       OK       OK
+  healthy_mic_03.wav                 0.1072       10.7         no         15       OK       OK
+  healthy_mic_04.wav                 0.1668       16.7         no         14       OK       OK
+  healthy_mic_05.wav                 0.1098       11.0         no         14       OK       OK
+  healthy_mic_06.wav                 0.0684        6.8         no         15       OK       OK
+  healthy_mic_07.wav                 0.1809       18.1         no         14       OK       OK
+  healthy_mic_08.wav                 0.2124       21.2         no         15       OK       OK
+  healthy_mic_09.wav                 0.1057       10.6         no         15       OK       OK
+  healthy_mic_10.wav                 0.0421        4.2         no         15       OK       OK
+
+  Healthy Raw Model: 30/30
+  Healthy After App Override: 30/30
+
+--- PD SAMPLES (30 files) ---
+File                               Raw Prob  App Prob%   Override   #Healthy   Raw OK   App OK
+------------------------------------------------------------------------------------------
+  pd_mild_01.wav                     0.9554       40.0        YES         13       OK     FAIL
+  pd_mild_02.wav                     0.9777       97.8         no          8       OK       OK
+  pd_mild_03.wav                     0.9526       40.0        YES         15       OK     FAIL
+  pd_mild_04.wav                     0.9708       97.1         no          8       OK       OK
+  pd_mild_05.wav                     0.9650       40.0        YES         12       OK     FAIL
+  pd_mild_06.wav                     0.9578       95.8         no          9       OK       OK
+  pd_mild_07.wav                     0.9534       40.0        YES         14       OK     FAIL
+  pd_mild_08.wav                     0.9706       97.1         no          8       OK       OK
+  pd_mild_09.wav                     0.9288       40.0        YES         15       OK     FAIL
+  pd_mild_10.wav                     0.9529       95.3         no          9       OK       OK
+  pd_moderate_01.wav                 0.9768       97.7         no          8       OK       OK
+  pd_moderate_02.wav                 0.9779       97.8         no          8       OK       OK
+  pd_moderate_03.wav                 0.9815       98.2         no          8       OK       OK
+  pd_moderate_04.wav                 0.9715       97.2         no          8       OK       OK
+  pd_moderate_05.wav                 0.9801       98.0         no          8       OK       OK
+  pd_moderate_06.wav                 0.9759       97.6         no          8       OK       OK
+  pd_moderate_07.wav                 0.9585       95.8         no          7       OK       OK
+  pd_moderate_08.wav                 0.9764       97.6         no          8       OK       OK
+  pd_moderate_09.wav                 0.9756       97.6         no          7       OK       OK
+  pd_moderate_10.wav                 0.9798       98.0         no          9       OK       OK
+  pd_severe_01.wav                   0.9657       96.6         no          7       OK       OK
+  pd_severe_02.wav                   0.9859       98.6         no          4       OK       OK
+  pd_severe_03.wav                   0.9657       96.6         no          6       OK       OK
+  pd_severe_04.wav                   0.9886       98.9         no          2       OK       OK
+  pd_severe_05.wav                   0.9874       98.7         no          3       OK       OK
+  pd_severe_06.wav                   0.9916       99.2         no          0       OK       OK
+  pd_severe_07.wav                   0.9767       97.7         no          7       OK       OK
+  pd_severe_08.wav                   0.9802       98.0         no          2       OK       OK
+  pd_severe_09.wav                   0.9782       97.8         no          8       OK       OK
+  pd_severe_10.wav                   0.9907       99.1         no          0       OK       OK
+
+  PD Raw Model: 30/30
+  PD After App Override: 25/30
+
+================================================================================
+ SUMMARY:
+   Raw Model Accuracy:        60/60 (100.0%)
+   After App Override Accuracy: 55/60 (91.7%)
+   Healthy raw: 30/30, PD raw: 30/30
+   Healthy app: 30/30, PD app: 25/30
+================================================================================
+
+--- STANDALONE DATA FILES ---
+  sample_01.wav                  raw=0.9834 app_pct=98.3% override=False n_healthy=4
+  sample_02.wav                  raw=0.9901 app_pct=99.0% override=False n_healthy=2
+  parkinsons_5sec.wav            raw=0.9329 app_pct=93.3% override=False n_healthy=4

@@ -1,0 +1,155 @@
+﻿======================================================================
+ PARKINSON'S MODEL RETRAINING WITH WAV AUGMENTATION
+======================================================================
+
+[1] Loading UCI dataset...
+    Using 16 Praat-extractable features: ['MDVP:Fo(Hz)', 'MDVP:Fhi(Hz)', 'MDVP:Flo(Hz)', 'MDVP:Jitter(%)', 'MDVP:Jitter(Abs)', 'MDVP:RAP', 'MDVP:PPQ', 'Jitter:DDP', 'MDVP:Shimmer', 'MDVP:Shimmer(dB)', 'Shimmer:APQ3', 'Shimmer:APQ5', 'MDVP:APQ', 'Shimmer:DDA', 'NHR', 'HNR']
+    Class 0 (Healthy): 48 samples
+    Class 1 (PD): 147 samples
+
+[2] Generating synthetic WAV test files...
+
+  Generating 30 healthy WAV files...
+  Generating 30 PD WAV files...
+    Generated 30 healthy + 30 PD WAV files
+
+[3] Extracting Praat features from WAV files...
+    Processing healthy WAVs...
+    -> 30 healthy samples extracted
+    Processing PD WAVs...
+    -> 30 PD samples extracted
+
+[4] Feature distribution comparison (UCI vs WAV)...
+    MDVP:Jitter(%):
+      UCI Healthy:  mean=0.003866  std=0.002055
+      WAV Healthy:  mean=0.001965  std=0.000758
+      UCI PD:       mean=0.006989  std=0.005240
+      WAV PD:       mean=0.009555  std=0.004787
+    MDVP:Shimmer:
+      UCI Healthy:  mean=0.017615  std=0.005544
+      WAV Healthy:  mean=0.001958  std=0.001136
+      UCI PD:       mean=0.033658  std=0.019970
+      WAV PD:       mean=0.017364  std=0.007399
+    HNR:
+      UCI Healthy:  mean=24.678750  std=3.434540
+      WAV Healthy:  mean=40.718827  std=5.458360
+      UCI PD:       mean=20.974048  std=4.339143
+      WAV PD:       mean=19.510168  std=3.731762
+    NHR:
+      UCI Healthy:  mean=0.011483  std=0.019088
+      WAV Healthy:  mean=0.000660  std=0.000039
+      UCI PD:       mean=0.029211  std=0.044447
+      WAV PD:       mean=0.015695  std=0.012929
+
+[5] Building augmented training dataset...
+    Combined dataset: 255 samples
+      Class 0 (Healthy): 78 samples
+      Class 1 (PD): 177 samples
+
+[6] Scaling features with MinMaxScaler...
+
+[7] Applying SMOTE to balance classes...
+    After SMOTE: {np.int64(0): np.int64(177), np.int64(1): np.int64(177)}
+
+[8] Training candidate models...
+
+  Training GradientBoosting...
+    Balanced Acc (CV) = 0.9464
+    ROC-AUC     (CV) = 0.9902
+    Accuracy    (CV) = 0.9338
+
+  Training RandomForest...
+    Balanced Acc (CV) = 0.9355
+    ROC-AUC     (CV) = 0.9834
+    Accuracy    (CV) = 0.9098
+
+  Training SVM_RBF...
+    Balanced Acc (CV) = 0.8284
+    ROC-AUC     (CV) = 0.9327
+    Accuracy    (CV) = 0.8122
+
+  Training LogisticRegression...
+    Balanced Acc (CV) = 0.7492
+    ROC-AUC     (CV) = 0.8949
+    Accuracy    (CV) = 0.7648
+
+[9] Selecting best model by balanced accuracy...
+    Best: GradientBoosting
+    Balanced Acc = 0.9464
+    ROC-AUC      = 0.9902
+
+[10] Calibrating model probabilities...
+
+[11] Finding optimal probability threshold...
+    Optimal threshold = 0.35 (balanced accuracy = 1.0000)
+
+[12] Validating on UCI CSV data...
+    UCI Accuracy:          1.0000
+    UCI Balanced Accuracy: 1.0000
+    Confusion matrix:
+      Healthy: TN=48  FP=0
+      PD:      FN=0  TP=147
+    Correct Healthy: 48/48  (100.0%)
+    Correct PD:      147/147  (100.0%)
+
+[13] Validating on WAV files...
+
+  HEALTHY WAVs (30 files):
+    Correctly classified: 30/30 (100.0%)
+    Mean probability:     0.0497
+    Range:                0.0211 - 0.1273
+python : Traceback 
+(most recent call 
+last):
+At line:1 char:1
++ python scripts/retrai
+n_with_wav_augmentation
+.py 2>&1 | Out-File 
+-File ...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo     
+         : 
+NotSpecified: (T    
+raceback (most recent  
+   call last)::String) 
+    [], RemoteException
+    + 
+FullyQualifiedError    
+Id : NativeCommandErr  
+  or
+ 
+  File "C:\Users\DELL\D
+esktop\parkinsons_hybri
+d_detection\Final_Parki
+nson_Proj-main\scripts\
+retrain_with_wav_augmen
+tation.py", line 532, 
+in <module>
+    print(f"      
+{name}: prob={proba_wav
+_h[i]:.4f} -> 
+{status}")
+    ~~~~~^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
+  File "C:\Program File
+s\WindowsApps\PythonSof
+twareFoundation.Python.
+3.13_3.13.3312.0_x64__q
+bz5n2kfra8p0\Lib\encodi
+ngs\cp1252.py", line 
+19, in encode
+    return codecs.charm
+ap_encode(input,self.er
+rors,encoding_table)[0]
+           ~~~~~~~~~~~~
+~~~~~~~~~^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 
+'charmap' codec can't 
+encode character 
+'\u2713' in position 
+44: character maps to 
+<undefined>

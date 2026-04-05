@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ParkinsonAI — Early Detection Using AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ParkinsonAI uses Deep Belief Networks and voice biomarkers for early, non-invasive Parkinson's disease screening.">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1e90ff;
+      --primary-dark: #0b6fcc;
+      --dark: #072a44;
+      --dark-mid: #0b3c5d;
+      --dark-light: #0d4f8a;
+      --accent: #ffe066;
+      --light-bg: #f0f4fb;
+      --card-bg: rgba(255,255,255,0.06);
+      --glass: rgba(255,255,255,0.08);
+      --glass-border: rgba(255,255,255,0.15);
+    }
+    * { box-sizing: border-box; }
+    body { background: var(--light-bg); margin: 0; font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; overflow-x: hidden; }
+
+    /* ─── Animated Background Orbs ─── */
+    .orb {
+      position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.15;
+      animation: orbFloat 12s ease-in-out infinite;
+    }
+    .orb-1 { width: 400px; height: 400px; background: #1e90ff; top: -100px; left: -100px; animation-delay: 0s; }
+    .orb-2 { width: 350px; height: 350px; background: #7dd4ff; bottom: -80px; right: -80px; animation-delay: 4s; }
+    .orb-3 { width: 250px; height: 250px; background: #ffe066; top: 50%; left: 60%; animation-delay: 8s; }
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -20px) scale(1.1); }
+      66% { transform: translate(-20px, 15px) scale(0.95); }
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      background: linear-gradient(160deg, #04192e 0%, #072a44 30%, #0d4f8a 70%, #1070cc 100%);
+      color: #fff; position: relative; overflow: hidden;
+      padding: 100px 40px 80px; min-height: 85vh;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-particles {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        radial-gradient(circle at 15% 25%, rgba(255,255,255,.04) 0 2px, transparent 2px),
+        radial-gradient(circle at 75% 15%, rgba(255,255,255,.05) 0 1.5px, transparent 1.5px),
+        radial-gradient(circle at 50% 80%, rgba(255,255,255,.03) 0 2px, transparent 2px),
+        radial-gradient(circle at 90% 60%, rgba(255,255,255,.04) 0 1px, transparent 1px);
+      background-size: 100px 100px, 80px 80px, 120px 120px, 60px 60px;
+      animation: particleDrift 25s linear infinite;
+    }
+    @keyframes particleDrift {
+      from { background-position: 0 0, 0 0, 0 0, 0 0; }
+      to { background-position: 100px 100px, -80px 80px, 120px -120px, -60px 60px; }
+    }
+    .hero-content {
+      position: relative; z-index: 2; max-width: 800px; text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 30px; padding: 8px 20px; font-size: 13px; font-weight: 600;
+      margin-bottom: 28px; color: rgba(255,255,255,0.95); letter-spacing: 0.5px;
+      backdrop-filter: blur(10px);
+    }
+    .hero-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .hero h1 {
+      font-size: 56px; margin: 0 0 24px; line-height: 1.1; font-weight: 900;
+      background: linear-gradient(135deg, #ffffff 0%, #c8e0ff 50%, #ffe066 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 18px; line-height: 1.8; color: rgba(255,255,255,0.8);
+      max-width: 620px; margin: 0 auto 40px;
+    }
+    .hero-sub strong { color: #fff; }
+    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: #fff; color: var(--dark); border: none;
+      padding: 16px 36px; border-radius: 14px; font-size: 16px; font-weight: 700;
+      cursor: pointer; box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+      transition: transform 0.2s, box-shadow 0.2s; display: inline-flex; align-items: center; gap: 10px;
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+    .btn-outline {
+      background: rgba(255,255,255,0.1); color: #fff;
+      border: 2px solid rgba(255,255,255,0.5); padding: 14px 32px; border-radius: 14px;
+      font-size: 16px; font-weight: 600; cursor: pointer; backdrop-filter: blur(10px);
+      transition: background 0.2s, border-color 0.2s; display: inline-flex; align-items: center; gap: 10px;
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.2); border-color: #fff; }
+
+    /* ─── Wave Separator ─── */
+    .wave-divider { position: relative; margin-top: -2px; z-index: 5; }
+    .wave-divider svg { display: block; }
+
+    /* ─── Section Base ─── */
+    .section {
+      max-width: 1140px; margin: 0 auto; padding: 80px 40px;
+    }
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 700; color: var(--primary);
+      text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px;
+    }
+    .section-label .line { width: 40px; height: 3px; background: var(--primary); border-radius: 2px; }
+    .section-title { font-size: 36px; font-weight: 800; color: var(--dark); margin: 0 0 16px; line-height: 1.2; }
+    .section-desc { font-size: 16px; color: #666; line-height: 1.8; max-width: 700px; margin: 0 0 48px; }
+
+    /* ─── Fade-in Animation ─── */
+    .fade-up {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── How It Works ─── */
+    .pipeline-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;
+      position: relative;
+    }
+    .pipeline-grid::before {
+      content: ''; position: absolute; top: 50px; left: 10%; right: 10%;
+      height: 3px; background: linear-gradient(90deg, var(--primary), #7dd4ff, var(--primary));
+      border-radius: 2px; opacity: 0.3;
+    }
+    .pipe-step {
+      text-align: center; background: #fff; border-radius: 20px;
+      padding: 28px 16px; position: relative; z-index: 2;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border: 1px solid rgba(30,144,255,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .pipe-step:hover { transform: translateY(-6px); box-shadow: 0 12px 36px rgba(30,144,255,0.15); }
+    .pipe-step .step-icon {
+      width: 60px; height: 60px; border-radius: 16px;
+      background: linear-gradient(135deg, #e8f4ff, #d0e8ff);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; margin: 0 auto 16px;
+    }
+    .pipe-step .step-num {
+      position: absolute; top: -10px; right: -10px;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--primary); color: #fff; font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pipe-step h4 { margin: 0 0 4px; font-size: 14px; font-weight: 700; color: var(--dark); }
+    .pipe-step p { margin: 0; font-size: 12px; color: #888; }
+
+    /* ─── Causes Section ─── */
+    .causes-section { background: linear-gradient(180deg, var(--light-bg), #e4ecf8); }
+    .cause-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .cause-card {
+      background: #fff; border-radius: 20px; padding: 32px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      border-left: 4px solid var(--primary);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .cause-card::after {
+      content: ''; position: absolute; top: 0; right: 0;
+      width: 100px; height: 100px; border-radius: 0 0 0 100%;
+      background: linear-gradient(135deg, rgba(30,144,255,0.05), rgba(30,144,255,0.02));
+    }
+    .cause-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
+    .cause-card:nth-child(2) { border-left-color: #ff6b6b; }
+    .cause-card:nth-child(3) { border-left-color: #ffa94d; }
+    .cause-card:nth-child(4) { border-left-color: #51cf66; }
+    .cause-card .card-icon { font-size: 36px; margin-bottom: 16px; }
+    .cause-card h3 { font-size: 18px; font-weight: 700; color: var(--dark); margin: 0 0 12px; }
+    .cause-card p { font-size: 14px; color: #555; line-height: 1.8; margin: 0; }
+
+    /* ─── Symptoms Section (dark) ─── */
+    .symptoms-section {
+      background: linear-gradient(160deg, var(--dark) 0%, var(--dark-mid) 50%, var(--dark-light) 100%);
+      color: #fff; position: relative; overflow: hidden;
+    }
+    .symptoms-section .section-label { color: #7dd4ff; }
+    .symptoms-section .section-label .line { background: #7dd4ff; }
+    .symptoms-section .section-title { color: #fff; }
+    .symptoms-section .section-desc { color: rgba(255,255,255,0.7); }
+    .symptom-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;
+    }
+    .symptom-card {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px; padding: 28px; backdrop-filter: blur(10px);
+      transition: background 0.3s, transform 0.3s, border-color 0.3s;
+    }
+    .symptom-card:hover { background: rgba(255,255,255,0.12); transform: translateY(-4px); border-color: rgba(125,212,255,0.4); }
+    .symptom-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      background: linear-gradient(135deg, rgba(125,212,255,0.2), rgba(30,144,255,0.15));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 16px;
+    }
+    .symptom-card h4 { font-size: 16px; font-weight: 700; color: #fff; margin: 0 0 8px; }
+    .symptom-card p { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.7; margin: 0; }
+    .symptom-tag {
+      display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;
+      margin-top: 12px;
+    }
+    .tag-motor { background: rgba(255,107,107,0.2); color: #ff8e8e; }
+    .tag-nonmotor { background: rgba(125,212,255,0.2); color: #7dd4ff; }
+
+    /* ─── Impact / Stats Section ─── */
+    .impact-section { background: var(--light-bg); }
+    .impact-hero {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+      margin-bottom: 60px;
+    }
+    .impact-text h3 { font-size: 26px; font-weight: 800; color: var(--dark); margin: 0 0 16px; line-height: 1.3; }
+    .impact-text p { font-size: 15px; color: #555; line-height: 1.8; margin: 0 0 12px; }
+    .impact-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .impact-stat {
+      background: #fff; border-radius: 20px; padding: 28px 24px; text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border-top: 4px solid var(--primary);
+      transition: transform 0.3s;
+    }
+    .impact-stat:hover { transform: translateY(-4px); }
+    .impact-stat:nth-child(2) { border-top-color: #ff6b6b; }
+    .impact-stat:nth-child(3) { border-top-color: #ffa94d; }
+    .impact-stat:nth-child(4) { border-top-color: #51cf66; }
+    .impact-stat .stat-val {
+      font-size: 36px; font-weight: 900; color: var(--dark);
+      margin-bottom: 4px;
+      background: linear-gradient(135deg, var(--primary), #0d4f8a);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .impact-stat:nth-child(2) .stat-val {
+      background: linear-gradient(135deg, #ff6b6b, #cc3d3d);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .impact-stat:nth-child(3) .stat-val {
+      background: linear-gradient(135deg, #ffa94d, #cc7a1d);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .impact-stat:nth-child(4) .stat-val {
+      background: linear-gradient(135deg, #51cf66, #2ea043);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .impact-stat .stat-label { font-size: 13px; color: #777; font-weight: 500; }
+
+    /* India card */
+    .india-banner {
+      background: linear-gradient(135deg, #0b3c5d, #1a6fb3);
+      border-radius: 24px; padding: 40px; color: #fff;
+      display: flex; align-items: center; gap: 40px; flex-wrap: wrap;
+      box-shadow: 0 8px 40px rgba(11,60,93,0.25);
+    }
+    .india-banner .india-icon { font-size: 72px; flex-shrink: 0; }
+    .india-info { flex: 1; min-width: 280px; }
+    .india-info h3 { font-size: 24px; font-weight: 800; margin: 0 0 12px; color: #fff; }
+    .india-info p { font-size: 15px; line-height: 1.8; color: rgba(255,255,255,0.85); margin: 0 0 16px; }
+    .india-stats-row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .india-stat-chip {
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 14px; padding: 14px 20px; text-align: center;
+      backdrop-filter: blur(6px); min-width: 120px;
+    }
+    .india-stat-chip .val { font-size: 22px; font-weight: 800; color: var(--accent); }
+    .india-stat-chip .lbl { font-size: 11px; color: rgba(255,255,255,0.8); margin-top: 2px; }
+
+    /* ─── CTA Section ─── */
+    .cta-section {
+      background: linear-gradient(160deg, var(--dark) 0%, var(--dark-light) 100%);
+      color: #fff; text-align: center; padding: 80px 40px;
+      position: relative; overflow: hidden;
+    }
+    .cta-section .orb { opacity: 0.08; }
+    .cta-section h2 {
+      font-size: 36px; font-weight: 800; margin: 0 0 16px; position: relative; z-index: 2;
+    }
+    .cta-section p {
+      font-size: 17px; color: rgba(255,255,255,0.75); margin: 0 0 36px;
+      max-width: 550px; margin-left: auto; margin-right: auto;
+      position: relative; z-index: 2;
+    }
+    .cta-section .hero-btns { position: relative; z-index: 2; }
+
+    /* ─── Disclaimer ─── */
+    .disclaimer {
+      max-width: 700px; margin: 0 auto; padding: 20px 40px;
+      text-align: center; font-size: 12px; color: #999; line-height: 1.7;
+    }
+    .disclaimer strong { color: #777; }
+
+    /* ─── Footer ─── */
+    .footer {
+      background: var(--dark); color: rgba(255,255,255,0.5);
+      text-align: center; padding: 24px; font-size: 13px;
+    }
+    .footer strong { color: rgba(255,255,255,0.8); }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 900px) {
+      .hero h1 { font-size: 38px; }
+      .hero { padding: 80px 24px 60px; min-height: auto; }
+      .pipeline-grid { grid-template-columns: repeat(3, 1fr); }
+      .pipeline-grid::before { display: none; }
+      .impact-hero { grid-template-columns: 1fr; }
+      .india-banner { flex-direction: column; text-align: center; }
+      .section { padding: 60px 24px; }
+    }
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 30px; }
+      .hero-sub { font-size: 15px; }
+      .section-title { font-size: 28px; }
+      .pipeline-grid { grid-template-columns: 1fr 1fr; }
+      .impact-stats { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+  <div class="nav-left">
+    <button type="button" class="hamburger" id="navToggle" aria-label="Open menu">☰</button>
+    <div class="logo">🧠 ParkinsonAI</div>
+  </div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Voice Lab</a>
+    <a href="history.html">History</a>
+    <a href="analysis.html">Analysis</a>
+  </div>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+<aside class="sidebar" id="sidebar" aria-hidden="true">
+  <button type="button" class="sidebar-close" id="sidebarClose" aria-label="Close menu">×</button>
+  <nav class="sidebar-nav">
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Voice Lab</a>
+    <a href="history.html">History</a>
+    <a href="analysis.html">Analysis</a>
+  </nav>
+</aside>
+<script>
+(function(){
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('sidebarOverlay');
+  var openBtn = document.getElementById('navToggle');
+  var closeBtn = document.getElementById('sidebarClose');
+  function openSidebar(){ if(sidebar){ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); } if(overlay){ overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); } }
+  function closeSidebar(){ if(sidebar){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); } if(overlay){ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); } }
+  if(openBtn) openBtn.addEventListener('click', openSidebar);
+  if(closeBtn) closeBtn.addEventListener('click', closeSidebar);
+  if(overlay) overlay.addEventListener('click', closeSidebar);
+  var links = document.querySelectorAll('.sidebar-nav a');
+  for(var i=0;i<links.length;i++) links[i].addEventListener('click', closeSidebar);
+})();
+</script>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-particles"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot"></span> AI-Powered Screening Tool</div>
+    <h1>Early Parkinson's Detection Using AI</h1>
+    <p class="hero-sub">
+      Detect early signs of <strong>Parkinson's disease</strong> through voice biomarkers using advanced 
+      <strong>Deep Belief Networks</strong>. Non-invasive, fast, and accessible — years before clinical symptoms appear.
+    </p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="location.href='dashboard.html'">🚀 Try Prediction</button>
+      <button class="btn-outline" onclick="location.href='analysis.html'">📊 View Analysis</button>
+    </div>
+  </div>
+</section>
+
+<!-- Wave -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="100%" height="80">
+    <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#f0f4fb"/>
+  </svg>
+</div>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<div class="section fade-up">
+  <div class="section-label"><span class="line"></span> How It Works</div>
+  <h2 class="section-title">Voice-Based AI Screening Pipeline</h2>
+  <p class="section-desc">Upload a voice recording and our AI extracts 22 acoustic biomarkers to assess Parkinson's risk in seconds.</p>
+  <div class="pipeline-grid">
+    <div class="pipe-step">
+      <span class="step-num">1</span>
+      <div class="step-icon">🎤</div>
+      <h4>Upload Audio</h4>
+      <p>WAV voice file</p>
+    </div>
+    <div class="pipe-step">
+      <span class="step-num">2</span>
+      <div class="step-icon">🔬</div>
+      <h4>Extract Features</h4>
+      <p>22 biomarkers via Praat</p>
+    </div>
+    <div class="pipe-step">
+      <span class="step-num">3</span>
+      <div class="step-icon">⚖️</div>
+      <h4>Normalise</h4>
+      <p>MinMaxScaler</p>
+    </div>
+    <div class="pipe-step">
+      <span class="step-num">4</span>
+      <div class="step-icon">🧠</div>
+      <h4>DBN Model</h4>
+      <p>Deep ANN 128→64</p>
+    </div>
+    <div class="pipe-step">
+      <span class="step-num">5</span>
+      <div class="step-icon">📊</div>
+      <h4>Risk Report</h4>
+      <p>Low / Med / High</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CAUSES ═══ -->
+<section class="causes-section">
+  <div class="section fade-up">
+    <div class="section-label"><span class="line"></span> Understanding the Disease</div>
+    <h2 class="section-title">Why Does Parkinson's Disease Occur?</h2>
+    <p class="section-desc">Parkinson's disease results from the gradual loss of dopamine-producing neurons in the brain. While the exact cause remains unknown, several factors play a critical role.</p>
+    <div class="cause-cards">
+      <div class="cause-card fade-up">
+        <div class="card-icon">🧬</div>
+        <h3>Genetic Factors</h3>
+        <p>Specific gene mutations (LRRK2, PARK7, SNCA, PINK1) have been identified in families with a history of PD. About 10–15% of cases have a genetic link, making family history a significant risk indicator.</p>
+      </div>
+      <div class="cause-card fade-up">
+        <div class="card-icon">🏭</div>
+        <h3>Environmental Toxins</h3>
+        <p>Prolonged exposure to pesticides (paraquat, rotenone), herbicides, and industrial chemicals significantly increases risk. Rural populations and agricultural workers show higher PD prevalence.</p>
+      </div>
+      <div class="cause-card fade-up">
+        <div class="card-icon">🧪</div>
+        <h3>Dopamine Depletion</h3>
+        <p>The brain's substantia nigra progressively loses neurons that produce dopamine — a chemical essential for smooth, coordinated muscle movement. Symptoms appear when 60–80% of these neurons are lost.</p>
+      </div>
+      <div class="cause-card fade-up">
+        <div class="card-icon">👴</div>
+        <h3>Age & Oxidative Stress</h3>
+        <p>Risk increases sharply after age 60. Ageing leads to accumulated oxidative damage in brain cells, mitochondrial dysfunction, and protein misfolding (α-synuclein / Lewy bodies).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SYMPTOMS ═══ -->
+<section class="symptoms-section">
+  <div class="section fade-up">
+    <div class="section-label"><span class="line"></span> Recognising the Signs</div>
+    <h2 class="section-title">Symptoms of Parkinson's Disease</h2>
+    <p class="section-desc">PD symptoms develop gradually over years. Early non-motor symptoms often appear 5–10 years before visible tremors.</p>
+    <div class="symptom-grid">
+      <div class="symptom-card fade-up">
+        <div class="symptom-icon">🫳</div>
+        <h4>Resting Tremor</h4>
+        <p>Involuntary shaking of hands, fingers, or jaw — most noticeable at rest and typically starts on one side of the body.</p>
+        <span class="symptom-tag tag-motor">Motor</span>
+      </div>
+      <div class="symptom-card fade-up">
+        <div class="symptom-icon">🦿</div>
+        <h4>Muscle Rigidity</h4>
+        <p>Stiffness in limbs and trunk causing reduced range of motion, pain, and difficulty with everyday tasks like dressing.</p>
+        <span class="symptom-tag tag-motor">Motor</span>
+      </div>
+      <div class="symptom-card fade-up">
+        <div class="symptom-icon">🚶</div>
+        <h4>Bradykinesia</h4>
+        <p>Slowness of movement — walking becomes shuffling, facial expressions diminish ("mask face"), and tasks take longer.</p>
+        <span class="symptom-tag tag-motor">Motor</span>
+      </div>
+      <div class="symptom-card fade-up">
+        <div class="symptom-icon">⚖️</div>
+        <h4>Postural Instability</h4>
+        <p>Impaired balance and coordination, leading to frequent falls. Appears in later stages and significantly impacts independence.</p>
+        <span class="symptom-tag tag-motor">Motor</span>
+      </div>
+      <div class="symptom-card fade-up">
+        <div class="symptom-icon">🗣️</div>
+        <h4>Voice Changes</h4>
+        <p>Speech becomes soft, monotone, or slurred. Voice biomarkers like jitter and shimmer change — the basis of our AI detection system.</p>
+        <span class="symptom-tag tag-nonmotor">Biomarker</span>
+      </div>
+      <div class="symptom-card fade-up">
+        <div class="symptom-icon">😴</div>
+        <h4>Sleep & Mood Issues</h4>
+        <p>REM sleep disorder, insomnia, depression, anxiety, and loss of smell. These non-motor symptoms can precede diagnosis by years.</p>
+        <span class="symptom-tag tag-nonmotor">Non-Motor</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GLOBAL IMPACT ═══ -->
+<section class="impact-section">
+  <div class="section fade-up">
+    <div class="section-label"><span class="line"></span> Global & National Impact</div>
+    <h2 class="section-title">Parkinson's Disease Around the World</h2>
+    <p class="section-desc">PD is the fastest-growing neurological disorder worldwide. Understanding its scale highlights the urgent need for early detection tools.</p>
+
+    <div class="impact-hero fade-up">
+      <div class="impact-text">
+        <h3>A Growing Global Health Crisis</h3>
+        <p>Parkinson's disease affects <strong>over 10 million people</strong> worldwide and is projected to double by 2040 due to ageing populations. It is the <strong>2nd most common neurodegenerative disorder</strong> after Alzheimer's.</p>
+        <p>Men are <strong>1.5× more likely</strong> to develop PD than women. The economic burden exceeds <strong>$52 billion annually</strong> in the United States alone, including medical costs and lost productivity.</p>
+      </div>
+      <div class="impact-stats">
+        <div class="impact-stat fade-up">
+          <div class="stat-val">10M+</div>
+          <div class="stat-label">People Affected Globally</div>
+        </div>
+        <div class="impact-stat fade-up">
+          <div class="stat-val">60+</div>
+          <div class="stat-label">Avg Age of Onset</div>
+        </div>
+        <div class="impact-stat fade-up">
+          <div class="stat-val">$52B</div>
+          <div class="stat-label">Annual Cost (US)</div>
+        </div>
+        <div class="impact-stat fade-up">
+          <div class="stat-val">2×</div>
+          <div class="stat-label">Growth by 2040</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- India Focus -->
+    <div class="india-banner fade-up">
+      <div class="india-icon">🇮🇳</div>
+      <div class="india-info">
+        <h3>Impact in India</h3>
+        <p>India has the <strong>3rd highest number</strong> of Parkinson's patients in the world. With a population exceeding 1.4 billion, an estimated <strong>7–10 lakh (0.7–1 million)</strong> people live with PD. The prevalence is rising rapidly due to increasing life expectancy, pesticide exposure in rural areas, and limited access to neurological care.</p>
+        <div class="india-stats-row">
+          <div class="india-stat-chip">
+            <div class="val">~10L</div>
+            <div class="lbl">Patients in India</div>
+          </div>
+          <div class="india-stat-chip">
+            <div class="val">3rd</div>
+            <div class="lbl">Highest Globally</div>
+          </div>
+          <div class="india-stat-chip">
+            <div class="val">1:1500</div>
+            <div class="lbl">Prevalence Ratio</div>
+          </div>
+          <div class="india-stat-chip">
+            <div class="val">58%</div>
+            <div class="lbl">Rural Cases</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-section">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <h2>Ready to Screen Your Voice?</h2>
+  <p>Upload a voice recording or CSV dataset and get AI-powered Parkinson's risk assessment in seconds.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="location.href='dashboard.html'">🚀 Start Prediction</button>
+    <button class="btn-outline" onclick="location.href='analysis.html'">📊 Model Analysis</button>
+  </div>
+</section>
+
+<!-- Disclaimer -->
+<div class="disclaimer">
+  <strong>⚠️ Disclaimer:</strong> This system is for <strong>academic and research purposes only</strong>.
+  It is not a substitute for professional medical diagnosis. Always consult a qualified neurologist.
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  © 2026 ParkinsonAI &nbsp;·&nbsp; <strong>Final Year Project — Dept. of CSE</strong> &nbsp;·&nbsp;
+  Parkinson's Disease Early Detection System (AI &amp; Voice) &nbsp;·&nbsp;
+  Academic Use Only
+</div>
+
+<!-- Scroll Fade-in Animation -->
+<script>
+(function(){
+  var targets = document.querySelectorAll('.fade-up');
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  targets.forEach(function(t){ observer.observe(t); });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+[
+  {
+    "person": "WAV File: healthy_voice (1).wav",
+    "result": "No Parkinson's Indicators Detected",
+    "risk_level": "Low",
+    "probability": 45,
+    "doctor_suggestion": "Voice biomarkers are within the healthy range. This is a screening aid only \u2014 maintain regular health check-ups. For most consistent results, use a clear WAV recording from a quiet environment.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-05T18:24:01.728Z"
+  },
+  {
+    "person": "phon_R01_S50",
+    "result": "Healthy",
+    "risk_level": "Low",
+    "probability": 22.17,
+    "doctor_suggestion": "No immediate concern. Regular check-ups recommended.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "csv",
+    "timestamp": "2026-04-05T16:32:01.962Z"
+  }
+]

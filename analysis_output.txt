@@ -1,0 +1,70 @@
+﻿=== UCI Healthy vs PD means ===
+  MDVP:Fo(Hz)                Healthy=  181.937771  PD=  145.180762
+  MDVP:Fhi(Hz)               Healthy=  223.636750  PD=  188.441463
+  MDVP:Flo(Hz)               Healthy=  145.207292  PD=  106.893558
+  MDVP:Jitter(%)             Healthy=    0.003866  PD=    0.006989
+  MDVP:Jitter(Abs)           Healthy=    0.000023  PD=    0.000051
+  MDVP:RAP                   Healthy=    0.001925  PD=    0.003757
+  MDVP:PPQ                   Healthy=    0.002056  PD=    0.003900
+  Jitter:DDP                 Healthy=    0.005776  PD=    0.011273
+  MDVP:Shimmer               Healthy=    0.017615  PD=    0.033658
+  MDVP:Shimmer(dB)           Healthy=    0.162958  PD=    0.321204
+  Shimmer:APQ3               Healthy=    0.009504  PD=    0.017676
+  Shimmer:APQ5               Healthy=    0.010509  PD=    0.020285
+  MDVP:APQ                   Healthy=    0.013305  PD=    0.027600
+  Shimmer:DDA                Healthy=    0.028511  PD=    0.053027
+  NHR                        Healthy=    0.011483  PD=    0.029211
+  HNR                        Healthy=   24.678750  PD=   20.974048
+
+Model accuracy on full UCI (16 features): 90.77%
+PD correct: 133/147
+Healthy correct: 44/48
+
+Healthy prob stats: mean=0.1616 max=0.8219 min=0.0002
+PD prob stats:     mean=0.8975 max=1.0000 min=0.0319
+
+=== Feature closeness for UCI HEALTHY samples ===
+  Healthy samples: features closer to healthy mean: min=4 mean=13.2 max=16
+
+=== Feature closeness for UCI PD samples ===
+  PD samples: features closer to healthy mean: min=0 mean=6.8 max=15
+
+=== Features from data/sample_01.wav ===
+  MDVP:Fo(Hz)                val=  164.840458  H=  181.937771  PD=  145.180762  -> HEALTHY
+  MDVP:Fhi(Hz)               val=  167.868811  H=  223.636750  PD=  188.441463  -> PD
+  MDVP:Flo(Hz)               val=  161.738438  H=  145.207292  PD=  106.893558  -> HEALTHY
+  MDVP:Jitter(%)             val=    0.013993  H=    0.003866  PD=    0.006989  -> PD
+  MDVP:Jitter(Abs)           val=    0.000085  H=    0.000023  PD=    0.000051  -> PD
+  MDVP:RAP                   val=    0.007859  H=    0.001925  PD=    0.003757  -> PD
+  MDVP:PPQ                   val=    0.009138  H=    0.002056  PD=    0.003900  -> PD
+  Jitter:DDP                 val=    0.023576  H=    0.005776  PD=    0.011273  -> PD
+  MDVP:Shimmer               val=    0.026474  H=    0.017615  PD=    0.033658  -> PD
+  MDVP:Shimmer(dB)           val=    0.230207  H=    0.162958  PD=    0.321204  -> HEALTHY
+  Shimmer:APQ3               val=    0.015165  H=    0.009504  PD=    0.017676  -> PD
+  Shimmer:APQ5               val=    0.016673  H=    0.010509  PD=    0.020285  -> PD
+  MDVP:APQ                   val=    0.017701  H=    0.013305  PD=    0.027600  -> HEALTHY
+  Shimmer:DDA                val=    0.045495  H=    0.028511  PD=    0.053027  -> PD
+  NHR                        val=    0.023769  H=    0.011483  PD=    0.029211  -> PD
+  HNR                        val=   16.239959  H=   24.678750  PD=   20.974048  -> PD
+  Features closer to healthy: 4/16
+  Model probability: 1.0000 (100.0%)
+
+=== Features from data/sample_02.wav ===
+  MDVP:Fo(Hz)                val=  162.218999  H=  181.937771  PD=  145.180762  -> PD
+  MDVP:Fhi(Hz)               val=  165.880441  H=  223.636750  PD=  188.441463  -> PD
+  MDVP:Flo(Hz)               val=  157.676870  H=  145.207292  PD=  106.893558  -> HEALTHY
+  MDVP:Jitter(%)             val=    0.015652  H=    0.003866  PD=    0.006989  -> PD
+  MDVP:Jitter(Abs)           val=    0.000096  H=    0.000023  PD=    0.000051  -> PD
+  MDVP:RAP                   val=    0.008835  H=    0.001925  PD=    0.003757  -> PD
+  MDVP:PPQ                   val=    0.010327  H=    0.002056  PD=    0.003900  -> PD
+  Jitter:DDP                 val=    0.026506  H=    0.005776  PD=    0.011273  -> PD
+  MDVP:Shimmer               val=    0.030284  H=    0.017615  PD=    0.033658  -> PD
+  MDVP:Shimmer(dB)           val=    0.263319  H=    0.162958  PD=    0.321204  -> PD
+  Shimmer:APQ3               val=    0.017385  H=    0.009504  PD=    0.017676  -> PD
+  Shimmer:APQ5               val=    0.018755  H=    0.010509  PD=    0.020285  -> PD
+  MDVP:APQ                   val=    0.019991  H=    0.013305  PD=    0.027600  -> HEALTHY
+  Shimmer:DDA                val=    0.052156  H=    0.028511  PD=    0.053027  -> PD
+  NHR                        val=    0.031710  H=    0.011483  PD=    0.029211  -> PD
+  HNR                        val=   14.987990  H=   24.678750  PD=   20.974048  -> PD
+  Features closer to healthy: 2/16
+  Model probability: 1.0000 (100.0%)

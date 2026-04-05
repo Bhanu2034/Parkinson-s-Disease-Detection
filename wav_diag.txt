@@ -1,0 +1,56 @@
+--- data/parkinsons_5sec.wav ---
+  Prob=0.7011 -> PD
+  MDVP:Fo(Hz): 119.984031
+  MDVP:Fhi(Hz): 124.474033
+  MDVP:Flo(Hz): 115.866682
+  MDVP:Jitter(%): 0.005986
+  MDVP:Jitter(Abs): 0.000050
+  MDVP:RAP: 0.001706
+  MDVP:PPQ: 0.002176
+  Jitter:DDP: 0.005119
+  MDVP:Shimmer: 0.060084
+  MDVP:Shimmer(dB): 0.567668
+  Shimmer:APQ3: 0.030839
+  Shimmer:APQ5: 0.034979
+  MDVP:APQ: 0.048628
+  Shimmer:DDA: 0.092517
+  NHR: 0.012470
+  HNR: 19.041451
+
+--- data/sample_01.wav ---
+  Prob=0.9982 -> PD
+  MDVP:Fo(Hz): 164.840458
+  MDVP:Fhi(Hz): 167.868811
+  MDVP:Flo(Hz): 161.738438
+  MDVP:Jitter(%): 0.013993
+  MDVP:Jitter(Abs): 0.000085
+  MDVP:RAP: 0.007859
+  MDVP:PPQ: 0.009138
+  Jitter:DDP: 0.023576
+  MDVP:Shimmer: 0.026474
+  MDVP:Shimmer(dB): 0.230207
+  Shimmer:APQ3: 0.015165
+  Shimmer:APQ5: 0.016673
+  MDVP:APQ: 0.017701
+  Shimmer:DDA: 0.045495
+  NHR: 0.023769
+  HNR: 16.239959
+
+--- data/sample_02.wav ---
+  Prob=0.9990 -> PD
+  MDVP:Fo(Hz): 162.218999
+  MDVP:Fhi(Hz): 165.880441
+  MDVP:Flo(Hz): 157.676870
+  MDVP:Jitter(%): 0.015652
+  MDVP:Jitter(Abs): 0.000096
+  MDVP:RAP: 0.008835
+  MDVP:PPQ: 0.010327
+  Jitter:DDP: 0.026506
+  MDVP:Shimmer: 0.030284
+  MDVP:Shimmer(dB): 0.263319
+  Shimmer:APQ3: 0.017385
+  Shimmer:APQ5: 0.018755
+  MDVP:APQ: 0.019991
+  Shimmer:DDA: 0.052156
+  NHR: 0.031710
+  HNR: 14.987990

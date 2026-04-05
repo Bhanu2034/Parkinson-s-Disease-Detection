@@ -1,0 +1,130 @@
+{
+  "MDVP:Fo(Hz)": {
+    "healthy_mean": 181.9377708333333,
+    "healthy_std": 52.7310671225468,
+    "pd_mean": 145.1807619047619,
+    "pd_std": 32.3480498902669,
+    "overall_min": 88.333,
+    "overall_max": 260.105
+  },
+  "MDVP:Fhi(Hz)": {
+    "healthy_mean": 223.63675,
+    "healthy_std": 96.72706709427085,
+    "pd_mean": 188.44146258503403,
+    "pd_std": 88.33917967815418,
+    "overall_min": 102.145,
+    "overall_max": 592.03
+  },
+  "MDVP:Flo(Hz)": {
+    "healthy_mean": 145.2072916666667,
+    "healthy_std": 58.75707046814219,
+    "pd_mean": 106.89355782312924,
+    "pd_std": 32.27435792239933,
+    "overall_min": 65.476,
+    "overall_max": 239.17
+  },
+  "MDVP:Jitter(%)": {
+    "healthy_mean": 0.0038660416666666665,
+    "healthy_std": 0.0020546229550914325,
+    "pd_mean": 0.006989251700680272,
+    "pd_std": 0.005239786946473302,
+    "overall_min": 0.00168,
+    "overall_max": 0.03316
+  },
+  "MDVP:Jitter(Abs)": {
+    "healthy_mean": 2.3375000000000002e-05,
+    "healthy_std": 1.4966096436719611e-05,
+    "pd_mean": 5.068027210884354e-05,
+    "pd_std": 3.6801203523082877e-05,
+    "overall_min": 7e-06,
+    "overall_max": 0.00026
+  },
+  "MDVP:RAP": {
+    "healthy_mean": 0.0019250000000000003,
+    "healthy_std": 0.0010661802969160116,
+    "pd_mean": 0.0037574829931972796,
+    "pd_std": 0.003241169635731135,
+    "overall_min": 0.00068,
+    "overall_max": 0.02144
+  },
+  "MDVP:PPQ": {
+    "healthy_mean": 0.0020560416666666665,
+    "healthy_std": 0.0009432644528520008,
+    "pd_mean": 0.003900340136054422,
+    "pd_std": 0.0029975113913126832,
+    "overall_min": 0.00092,
+    "overall_max": 0.01958
+  },
+  "Jitter:DDP": {
+    "healthy_mean": 0.005776041666666666,
+    "healthy_std": 0.0031993654554264175,
+    "pd_mean": 0.011273061224489796,
+    "pd_std": 0.009723507429374579,
+    "overall_min": 0.00204,
+    "overall_max": 0.06433
+  },
+  "MDVP:Shimmer": {
+    "healthy_mean": 0.01761520833333333,
+    "healthy_std": 0.005544432127391247,
+    "pd_mean": 0.03365816326530613,
+    "pd_std": 0.019970079023187166,
+    "overall_min": 0.00954,
+    "overall_max": 0.11908
+  },
+  "MDVP:Shimmer(dB)": {
+    "healthy_mean": 0.16295833333333334,
+    "healthy_std": 0.05782216255268825,
+    "pd_mean": 0.32120408163265307,
+    "pd_std": 0.20779837233450602,
+    "overall_min": 0.085,
+    "overall_max": 1.302
+  },
+  "Shimmer:APQ3": {
+    "healthy_mean": 0.009503541666666667,
+    "healthy_std": 0.003456031723642405,
+    "pd_mean": 0.01767578231292517,
+    "pd_std": 0.010797270832564118,
+    "overall_min": 0.00455,
+    "overall_max": 0.05647
+  },
+  "Shimmer:APQ5": {
+    "healthy_mean": 0.010508541666666668,
+    "healthy_std": 0.003231086366009106,
+    "pd_mean": 0.020284693877551024,
+    "pd_std": 0.012847239472477403,
+    "overall_min": 0.0057,
+    "overall_max": 0.0794
+  },
+  "MDVP:APQ": {
+    "healthy_mean": 0.013304791666666668,
+    "healthy_std": 0.0038251229932017307,
+    "pd_mean": 0.0276004081632653,
+    "pd_std": 0.018062426522675635,
+    "overall_min": 0.00719,
+    "overall_max": 0.13778
+  },
+  "Shimmer:DDA": {
+    "healthy_mean": 0.028511458333333337,
+    "healthy_std": 0.01036847718349276,
+    "pd_mean": 0.05302727891156462,
+    "pd_std": 0.03239148570179548,
+    "overall_min": 0.01364,
+    "overall_max": 0.16942
+  },
+  "NHR": {
+    "healthy_mean": 0.011482708333333333,
+    "healthy_std": 0.019088407280568626,
+    "pd_mean": 0.029210952380952383,
+    "pd_std": 0.04444717830594796,
+    "overall_min": 0.00065,
+    "overall_max": 0.31482
+  },
+  "HNR": {
+    "healthy_mean": 24.678749999999997,
+    "healthy_std": 3.4345402708863997,
+    "pd_mean": 20.974047619047617,
+    "pd_std": 4.3391425441283715,
+    "overall_min": 8.441,
+    "overall_max": 33.047
+  }
+}
