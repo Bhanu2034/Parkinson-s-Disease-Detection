@@ -29,7 +29,7 @@ import shap
 # ================================
 # 1. LOAD DATASET (LOCAL FILE)
 # ================================
-df = pd.read_csv("parkinsons.csv")  # <-- put your CSV here
+df = pd.read_csv("../data/parkinsons.csv")
 
 if 'name' in df.columns:
     df.drop('name', axis=1, inplace=True)
@@ -119,7 +119,8 @@ corr_matrix = np.corrcoef(X_train.T)
 plt.figure(figsize=(8,6))
 sns.heatmap(corr_matrix[:15, :15], cmap='coolwarm')
 plt.title("Feature Correlation Matrix (Graph Basis)")
-plt.show()
+plt.savefig("correlation_matrix.png")
+plt.close()
 
 X_graph = X_train @ corr_matrix
 Xg_train, Xg_test, yg_train, yg_test = train_test_split(
@@ -230,7 +231,9 @@ print(f"Autoencoder Anomaly ROC-AUC: {anomaly_auc:.4f}")
 # ================================
 explainer = shap.KernelExplainer(cnn_graph.predict, Xg_train[:50])
 shap_values = explainer.shap_values(Xg_test[:50])
-shap.summary_plot(shap_values, Xg_test[:50])
+shap.summary_plot(shap_values, Xg_test[:50], show=False)
+plt.savefig("shap_summary.png")
+plt.close()
 
 # ================================
 # 12. FINAL MODEL COMPARISON
@@ -241,7 +244,8 @@ plt.xticks(rotation=45)
 plt.ylabel("Accuracy")
 plt.title("Final Model Accuracy Comparison")
 plt.ylim(0,1)
-plt.show()
+plt.savefig("model_comparison.png")
+plt.close()
 
 print("\n--- FULL PIPELINE COMPLETED SUCCESSFULLY ---")
 

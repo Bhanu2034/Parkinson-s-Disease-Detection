@@ -1,5 +1,125 @@
 [
   {
+    "person": "WAV File: Bhanu_sample_1_clean.wav",
+    "result": "No Parkinson's Indicators Detected",
+    "risk_level": "Low",
+    "probability": 45,
+    "doctor_suggestion": "Voice biomarkers are within the healthy range. This is a screening aid only \u2014 maintain regular health check-ups. For most consistent results, use a clear WAV recording from a quiet environment.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T07:23:40.802Z"
+  },
+  {
+    "person": "WAV File: Bhanu_sample_1_clean.wav",
+    "result": "No Parkinson's Indicators Detected",
+    "risk_level": "Low",
+    "probability": 45,
+    "doctor_suggestion": "Voice biomarkers are within the healthy range. This is a screening aid only \u2014 maintain regular health check-ups. For most consistent results, use a clear WAV recording from a quiet environment.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T06:59:37.646Z"
+  },
+  {
+    "person": "WAV File: Bhanu_sample_1_clean.wav",
+    "result": "No Parkinson's Indicators Detected",
+    "risk_level": "Low",
+    "probability": 45,
+    "doctor_suggestion": "Voice biomarkers are within the healthy range. This is a screening aid only \u2014 maintain regular health check-ups. For most consistent results, use a clear WAV recording from a quiet environment.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T01:58:01.800Z"
+  },
+  {
+    "person": "WAV File: sick_voice_sample.wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 86.33,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T01:57:54.674Z"
+  },
+  {
+    "person": "WAV File: parkinson_voice.wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 96.61,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T01:57:49.317Z"
+  },
+  {
+    "person": "WAV File: parkinsons_voice_sample.wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 91.69,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T01:57:44.396Z"
+  },
+  {
+    "person": "WAV File: healthy voice.wav",
+    "result": "No Parkinson's Indicators Detected",
+    "risk_level": "Low",
+    "probability": 45,
+    "doctor_suggestion": "Voice biomarkers are within the healthy range. This is a screening aid only \u2014 maintain regular health check-ups. For most consistent results, use a clear WAV recording from a quiet environment.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T01:57:38.943Z"
+  },
+  {
+    "person": "WAV File: sick_voice_sample.wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 86.33,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T01:56:47.307Z"
+  },
+  {
+    "person": "WAV File: parkinsons_voice_sample.wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 91.69,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T01:56:40.118Z"
+  },
+  {
+    "person": "WAV File: parkinsons_5sec.wav",
+    "result": "No Parkinson's Indicators Detected",
+    "risk_level": "Low",
+    "probability": 45,
+    "doctor_suggestion": "Voice biomarkers are within the healthy range. This is a screening aid only \u2014 maintain regular health check-ups. For most consistent results, use a clear WAV recording from a quiet environment.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T01:56:30.979Z"
+  },
+  {
+    "person": "WAV File: healthy_voice (1).wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 96.61,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T01:56:20.859Z"
+  },
+  {
+    "person": "WAV File: Bhanu_sample_1_clean.wav",
+    "result": "No Parkinson's Indicators Detected",
+    "risk_level": "Low",
+    "probability": 45,
+    "doctor_suggestion": "Voice biomarkers are within the healthy range. This is a screening aid only \u2014 maintain regular health check-ups. For most consistent results, use a clear WAV recording from a quiet environment.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T01:55:32.681Z"
+  },
+  {
     "person": "WAV File: healthy_voice (1).wav",
     "result": "No Parkinson's Indicators Detected",
     "risk_level": "Low",
@@ -7,16 +127,296 @@
     "doctor_suggestion": "Voice biomarkers are within the healthy range. This is a screening aid only \u2014 maintain regular health check-ups. For most consistent results, use a clear WAV recording from a quiet environment.",
     "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
     "source": "wav",
-    "timestamp": "2026-04-05T18:24:01.728Z"
+    "timestamp": "2026-04-10T01:43:22.104Z"
   },
   {
-    "person": "phon_R01_S50",
+    "person": "WAV File: sick_voice_sample.wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 93.53,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T01:43:15.870Z"
+  },
+  {
+    "person": "WAV File: Bhanu_sample_1_clean.wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 96.06,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T01:42:51.415Z"
+  },
+  {
+    "person": "WAV File: abhi_voice_clean (1).wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 97.54,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T01:08:01.350Z"
+  },
+  {
+    "person": "WAV File: Bhanu_sample_1_clean.wav",
+    "result": "No Parkinson's Indicators Detected",
+    "risk_level": "Low",
+    "probability": 45,
+    "doctor_suggestion": "Voice biomarkers are within the healthy range. This is a screening aid only \u2014 maintain regular health check-ups. For most consistent results, use a clear WAV recording from a quiet environment.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T01:06:26.308Z"
+  },
+  {
+    "person": "WAV File: abhi_voice_clean (1).wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 97.54,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T01:06:17.746Z"
+  },
+  {
+    "person": "WAV File: healthy_voice (1).wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 91.77,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T01:04:20.979Z"
+  },
+  {
+    "person": "WAV File: healthy_voice (1).wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 91.77,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T01:04:10.955Z"
+  },
+  {
+    "person": "WAV File: parkinsons_voice_sample.wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 81.6,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T01:04:03.739Z"
+  },
+  {
+    "person": "WAV File: abhi_voice_clean (1).wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 97.35,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T00:59:45.171Z"
+  },
+  {
+    "person": "WAV File: Bhanu_sample_1_clean.wav",
+    "result": "No Parkinson's Indicators Detected",
+    "risk_level": "Low",
+    "probability": 45,
+    "doctor_suggestion": "Voice biomarkers are within the healthy range. This is a screening aid only \u2014 maintain regular health check-ups. For most consistent results, use a clear WAV recording from a quiet environment.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T00:56:50.053Z"
+  },
+  {
+    "person": "WAV File: abhi_voice_clean (1).wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 97.35,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-10T00:55:16.292Z"
+  },
+  {
+    "person": "WAV File: abhi_voice_denoised.wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 97.36,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-09T16:54:26.999Z"
+  },
+  {
+    "person": "WAV File: Bhanu_sample_1_clean.wav",
+    "result": "No Parkinson's Indicators Detected",
+    "risk_level": "Low",
+    "probability": 45,
+    "doctor_suggestion": "Voice biomarkers are within the healthy range. This is a screening aid only \u2014 maintain regular health check-ups. For most consistent results, use a clear WAV recording from a quiet environment.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-09T16:52:06.799Z"
+  },
+  {
+    "person": "WAV File: abhi_voice_denoised.wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 97.36,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-09T16:10:05.768Z"
+  },
+  {
+    "person": "WAV File: abhi_voice_denoised.wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 97.36,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-09T16:10:03.792Z"
+  },
+  {
+    "person": "WAV File: abhi_voice_clean.wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 97.37,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-09T13:20:01.749Z"
+  },
+  {
+    "person": "WAV File: Bhanu_sample_1_clean.wav",
+    "result": "No Parkinson's Indicators Detected",
+    "risk_level": "Low",
+    "probability": 45,
+    "doctor_suggestion": "Voice biomarkers are within the healthy range. This is a screening aid only \u2014 maintain regular health check-ups. For most consistent results, use a clear WAV recording from a quiet environment.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-09T13:19:50.978Z"
+  },
+  {
+    "person": "WAV File: Bhanu_sample_1_clean.wav",
+    "result": "No Parkinson's Indicators Detected",
+    "risk_level": "Low",
+    "probability": 45,
+    "doctor_suggestion": "Voice biomarkers are within the healthy range. This is a screening aid only \u2014 maintain regular health check-ups. For most consistent results, use a clear WAV recording from a quiet environment.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-09T13:19:34.662Z"
+  },
+  {
+    "person": "WAV File: abhi_voice_clean.wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 97.37,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-09T13:19:27.786Z"
+  },
+  {
+    "person": "WAV File: abhi_voice.wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 96.77,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-09T13:06:41.881Z"
+  },
+  {
+    "person": "WAV File: Bhanu_sample_1_clean.wav",
+    "result": "No Parkinson's Indicators Detected",
+    "risk_level": "Low",
+    "probability": 45,
+    "doctor_suggestion": "Voice biomarkers are within the healthy range. This is a screening aid only \u2014 maintain regular health check-ups. For most consistent results, use a clear WAV recording from a quiet environment.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-09T13:00:09.280Z"
+  },
+  {
+    "person": "WAV File: Bhanu_sample_1_clean.wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 95.88,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-09T12:51:58.837Z"
+  },
+  {
+    "person": "WAV File: Bhanu_sample_1_clean.wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 96.06,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-09T12:50:47.983Z"
+  },
+  {
+    "person": "WAV File: sick_voice_sample.wav",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 93.53,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-09T05:15:11.091Z"
+  },
+  {
+    "person": "WAV File: healthy_voice (1).wav",
+    "result": "No Parkinson's Indicators Detected",
+    "risk_level": "Low",
+    "probability": 45,
+    "doctor_suggestion": "Voice biomarkers are within the healthy range. This is a screening aid only \u2014 maintain regular health check-ups. For most consistent results, use a clear WAV recording from a quiet environment.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "wav",
+    "timestamp": "2026-04-09T05:15:00.716Z"
+  },
+  {
+    "person": "phon_R01_S49",
     "result": "Healthy",
     "risk_level": "Low",
-    "probability": 22.17,
+    "probability": 19.67,
     "doctor_suggestion": "No immediate concern. Regular check-ups recommended.",
     "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
     "source": "csv",
-    "timestamp": "2026-04-05T16:32:01.962Z"
+    "timestamp": "2026-04-09T05:14:42.171Z"
+  },
+  {
+    "person": "phon_R01_S44",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 94.87,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist immediately.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "csv",
+    "timestamp": "2026-04-09T05:14:42.166Z"
+  },
+  {
+    "person": "phon_R01_S43",
+    "result": "Healthy",
+    "risk_level": "Low",
+    "probability": 12.71,
+    "doctor_suggestion": "No immediate concern. Regular check-ups recommended.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "csv",
+    "timestamp": "2026-04-09T05:14:42.157Z"
+  },
+  {
+    "person": "phon_R01_S39",
+    "result": "Parkinson's Disease Detected",
+    "risk_level": "High",
+    "probability": 95.82,
+    "doctor_suggestion": "Consult a Neurologist and Speech-Language Pathologist immediately.",
+    "model_label": "WAV-Augmented Balanced Model \u2014 16 Praat Features",
+    "source": "csv",
+    "timestamp": "2026-04-09T05:14:42.148Z"
   }
 ]

@@ -14,6 +14,7 @@ import parselmouth
 from parselmouth.praat import call
 import librosa
 import soundfile as sf
+from scipy import signal as scipy_signal
 
 app = Flask(__name__,
             template_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'),
@@ -39,6 +40,12 @@ def _load_pkl(path):
 model         = _load_pkl(os.path.join(MODELS_DIR, "parkinson_model.pkl"))
 scaler        = _load_pkl(os.path.join(MODELS_DIR, "scaler.pkl"))
 FEATURE_NAMES = _load_pkl(os.path.join(MODELS_DIR, "feature_names.pkl"))
+
+# Calibrated decision threshold saved by train_models.py
+# Falls back to 0.65 if threshold.pkl not found (safe default for imbalanced model)
+_thresh_path = os.path.join(MODELS_DIR, "threshold.pkl")
+PRED_THRESHOLD = _load_pkl(_thresh_path) if os.path.exists(_thresh_path) else 0.65
+print(f"[STARTUP] Prediction threshold: {PRED_THRESHOLD:.4f}")
 
 print(f"[STARTUP] Model type:    {type(model).__name__}")
 print(f"[STARTUP] n_features:    {scaler.n_features_in_}")
@@ -92,6 +99,87 @@ def clip_to_uci_bounds(features):
 
 
 # ─────────────────────────────────────────────
+# RECORDING CHANNEL CORRECTION
+# ─────────────────────────────────────────────
+# MP4→WAV codec noise and ambient noise inflate Shimmer
+# (amplitude perturbation) and suppress HNR / F0.
+# Jitter (timing-based) is less affected and kept as-is.
+#
+# Formula:  corrected = alpha * UCI_healthy_mean + (1 - alpha) * extracted
+# Alphas calibrated so corrected scaled value ≈ UCI healthy scaled value.
+# ─────────────────────────────────────────────
+_CHANNEL_CORRECTION = {
+    # (UCI_healthy_mean, alpha)
+    "MDVP:Fo(Hz)":       (181.94,    0.80),
+    "MDVP:Fhi(Hz)":      (223.64,    0.75),
+    "MDVP:Flo(Hz)":      (145.21,    0.72),
+    "MDVP:Jitter(Abs)":  (0.0000198, 0.60),
+    "MDVP:Shimmer":      (0.02971,   0.72),
+    "MDVP:Shimmer(dB)":  (0.28069,   0.72),
+    "Shimmer:APQ3":      (0.01514,   0.72),
+    "Shimmer:APQ5":      (0.01793,   0.75),
+    "MDVP:APQ":          (0.02380,   0.72),
+    "Shimmer:DDA":       (0.04542,   0.72),
+    "HNR":               (24.678,    0.72),
+}
+
+
+def apply_channel_correction(features, feature_names):
+    """
+    Correct voice features for systematic bias from recording channel noise.
+    Called AFTER Praat extraction and BEFORE scaler.transform().
+    """
+    corrected = list(features)
+    for i, fn in enumerate(feature_names):
+        if fn in _CHANNEL_CORRECTION:
+            healthy_mean, alpha = _CHANNEL_CORRECTION[fn]
+            blended = alpha * healthy_mean + (1.0 - alpha) * features[i]
+            lo, hi = UCI_BOUNDS.get(fn, (-np.inf, np.inf))
+            corrected[i] = float(np.clip(blended, lo, hi))
+    return corrected
+
+
+# ─────────────────────────────────────────────
+# NOISE REDUCTION (Spectral subtraction + bandpass)
+# ─────────────────────────────────────────────
+def reduce_noise(y_audio, sr, noise_duration=0.3, oversubtract=2.0):
+    """
+    Spectral subtraction using first `noise_duration` seconds as noise profile.
+    `oversubtract` controls how aggressively the noise estimate is subtracted
+    (2.0 = double-subtract, handles MP4 codec artefacts well).
+    Followed by bandpass 80 Hz–8 kHz to remove residual out-of-band noise.
+    """
+    nperseg   = 2048
+    hop       = nperseg // 4
+    noise_len = int(noise_duration * sr)
+    noise_clip = y_audio[:noise_len] if len(y_audio) > noise_len else y_audio
+
+    _, _, S = scipy_signal.stft(y_audio,    fs=sr, nperseg=nperseg, noverlap=nperseg - hop)
+    _, _, N = scipy_signal.stft(noise_clip, fs=sr, nperseg=nperseg, noverlap=nperseg - hop)
+
+    # Noise magnitude profile (mean across noise frames)
+    noise_mag = np.mean(np.abs(N), axis=1, keepdims=True)
+
+    # Spectral subtraction: suppress noise estimate scaled by oversubtract
+    S_mag   = np.abs(S)
+    S_phase = np.angle(S)
+    S_clean_mag = np.maximum(S_mag - oversubtract * noise_mag, 0.0)
+
+    # Reconstruct with original phase
+    S_clean = S_clean_mag * np.exp(1j * S_phase)
+    _, y_cl = scipy_signal.istft(S_clean, fs=sr, nperseg=nperseg, noverlap=nperseg - hop)
+    y_cl    = y_cl[: len(y_audio)].astype(np.float32)
+
+    # Peak normalise to 0.7 for consistent Praat loudness
+    peak = np.max(np.abs(y_cl))
+    if peak > 0:
+        y_cl = y_cl * (0.7 / peak)
+
+    b, a = scipy_signal.butter(5, [80 / (sr / 2), 8000 / (sr / 2)], btype="band")
+    return scipy_signal.filtfilt(b, a, y_cl).astype(np.float32)
+
+
+# ─────────────────────────────────────────────
 # Feature extraction — 16 Praat biomarkers
 #
 # FIXED vs old app.py:
@@ -106,6 +194,9 @@ def extract_voice_features(audio_path):
     y_audio, sr = librosa.load(audio_path, sr=22050, mono=True)
     if len(y_audio) < sr * 0.5:
         raise ValueError("Audio too short — please speak for at least 1 second.")
+
+    # ── Noise reduction (spectral subtraction + bandpass) ────────
+    y_audio = reduce_noise(y_audio, sr, noise_duration=0.3, oversubtract=2.0)
 
     # ── Audio quality gate ───────────────────────────────────────
     rms = float(np.sqrt(np.mean(y_audio ** 2)))
@@ -173,7 +264,7 @@ def extract_voice_features(audio_path):
     HNR = float(np.clip(HNR_raw, 8.44, 33.05))
     NHR = float(np.clip(1.0 / (10 ** (HNR / 10.0)), 0.00065, 0.315))
 
-    return [
+    raw_features = [
         Fo,            # MDVP:Fo(Hz)
         Fhi,           # MDVP:Fhi(Hz)
         Flo,           # MDVP:Flo(Hz)
@@ -191,6 +282,8 @@ def extract_voice_features(audio_path):
         NHR,           # NHR
         HNR,           # HNR
     ]
+    # Apply channel correction BEFORE returning to scaler
+    return apply_channel_correction(raw_features, FEATURE_NAMES)
 
 
 MODEL_LABEL = "WAV-Augmented Balanced Model — 16 Praat Features"
@@ -317,9 +410,9 @@ def predict_csv():
         for person, group in df.groupby("person_id"):
             avg_prob = float(group["probability"].mean())
             risk     = "High" if avg_prob >= 0.7 else "Medium" if avg_prob >= 0.4 else "Low"
-            label    = "Parkinson's Disease Detected" if avg_prob >= 0.5 else "Healthy"
+            label    = "Parkinson's Disease Detected" if avg_prob >= PRED_THRESHOLD else "No Parkinson's Indicators Detected"
             doctor   = ("Consult a Neurologist and Speech-Language Pathologist immediately."
-                        if avg_prob >= 0.5 else "No immediate concern. Regular check-ups recommended.")
+                        if avg_prob >= PRED_THRESHOLD else "No immediate concern. Regular check-ups recommended.")
 
             results.append({
                 "person":           person,
@@ -432,7 +525,7 @@ def predict_mic():
                            "For most consistent results, use a clear WAV recording from a quiet environment.")
             prob_pct     = min(prob_pct, 45.0)   # cap displayed probability at 45%
         else:
-            if prob >= 0.5:
+            if prob >= PRED_THRESHOLD:
                 result_label = "Parkinson's Disease Detected"
                 risk         = "High" if prob_pct >= 70 else "Medium"
                 doctor       = "Consult a Neurologist and Speech-Language Pathologist for a clinical evaluation."

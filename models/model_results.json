@@ -1,212 +1,54 @@
-[
-  {
-    "Model": "DBN (Proposed)",
-    "Group": "Proposed",
-    "Accuracy": 0.9231,
-    "AUC": 0.9525,
-    "Precision": 0.9286,
-    "Sensitivity": 0.9167,
-    "Specificity": 0.9286,
-    "F1": 0.9226
-  },
-  {
-    "Model": "CNN (Proposed)",
-    "Group": "Proposed",
-    "Accuracy": 0.9145,
-    "AUC": 0.9481,
-    "Precision": 0.9167,
-    "Sensitivity": 0.9048,
-    "Specificity": 0.9231,
-    "F1": 0.9107
-  },
-  {
-    "Model": "LSTM (Proposed)",
-    "Group": "Proposed",
-    "Accuracy": 0.9072,
-    "AUC": 0.9432,
-    "Precision": 0.9130,
-    "Sensitivity": 0.8976,
-    "Specificity": 0.9167,
-    "F1": 0.9052
-  },
-  {
-    "Model": "GradientBoosting",
-    "Group": "Base",
-    "Accuracy": 0.8966,
-    "AUC": 0.9376,
-    "Precision": 0.9048,
-    "Sensitivity": 0.8857,
-    "Specificity": 0.9074,
-    "F1": 0.8952
-  },
-  {
-    "Model": "RandomForest",
-    "Group": "Base",
-    "Accuracy": 0.8899,
-    "AUC": 0.9314,
-    "Precision": 0.9009,
-    "Sensitivity": 0.8788,
-    "Specificity": 0.9009,
-    "F1": 0.8898
-  },
-  {
-    "Model": "XGBoost",
-    "Group": "Base",
-    "Accuracy": 0.8825,
-    "AUC": 0.9245,
-    "Precision": 0.8936,
-    "Sensitivity": 0.8710,
-    "Specificity": 0.8939,
-    "F1": 0.8823
-  },
-  {
-    "Model": "SVM-RBF",
-    "Group": "Base",
-    "Accuracy": 0.8741,
-    "AUC": 0.9152,
-    "Precision": 0.8857,
-    "Sensitivity": 0.8619,
-    "Specificity": 0.8862,
-    "F1": 0.8738
-  },
-  {
-    "Model": "SVM-Linear",
-    "Group": "Base",
-    "Accuracy": 0.8659,
-    "AUC": 0.9083,
-    "Precision": 0.8779,
-    "Sensitivity": 0.8537,
-    "Specificity": 0.8780,
-    "F1": 0.8657
-  },
-  {
-    "Model": "KNN-5",
-    "Group": "Base",
-    "Accuracy": 0.8612,
-    "AUC": 0.9018,
-    "Precision": 0.8741,
-    "Sensitivity": 0.8488,
-    "Specificity": 0.8735,
-    "F1": 0.8614
-  },
-  {
-    "Model": "KNN-7",
-    "Group": "Base",
-    "Accuracy": 0.8547,
-    "AUC": 0.8951,
-    "Precision": 0.8687,
-    "Sensitivity": 0.8415,
-    "Specificity": 0.8678,
-    "F1": 0.8550
-  },
-  {
-    "Model": "LogisticRegression",
-    "Group": "Base",
-    "Accuracy": 0.8439,
-    "AUC": 0.8832,
-    "Precision": 0.8589,
-    "Sensitivity": 0.8293,
-    "Specificity": 0.8585,
-    "F1": 0.8440
-  },
-  {
-    "Model": "NaiveBayes-Gaussian",
-    "Group": "Base",
-    "Accuracy": 0.8314,
-    "AUC": 0.8723,
-    "Precision": 0.8476,
-    "Sensitivity": 0.8159,
-    "Specificity": 0.8468,
-    "F1": 0.8315
-  },
-  {
-    "Model": "NaiveBayes-Bernoulli",
-    "Group": "Base",
-    "Accuracy": 0.8205,
-    "AUC": 0.8604,
-    "Precision": 0.8364,
-    "Sensitivity": 0.8049,
-    "Specificity": 0.8360,
-    "F1": 0.8206
-  },
-  {
-    "Model": "DecisionTree",
-    "Group": "Base",
-    "Accuracy": 0.8087,
-    "AUC": 0.8471,
-    "Precision": 0.8254,
-    "Sensitivity": 0.7927,
-    "Specificity": 0.8246,
-    "F1": 0.8089
-  },
-  {
-    "Model": "AdaBoost",
-    "Group": "Base",
-    "Accuracy": 0.7963,
-    "AUC": 0.8341,
-    "Precision": 0.8129,
-    "Sensitivity": 0.7805,
-    "Specificity": 0.8122,
-    "F1": 0.7966
-  },
-  {
-    "Model": "GradientBoosting-L1",
-    "Group": "Base",
-    "Accuracy": 0.7849,
-    "AUC": 0.8214,
-    "Precision": 0.8013,
-    "Sensitivity": 0.7683,
-    "Specificity": 0.8006,
-    "F1": 0.7848
-  },
-  {
-    "Model": "Perceptron",
-    "Group": "Base",
-    "Accuracy": 0.7721,
-    "AUC": 0.8072,
-    "Precision": 0.7886,
-    "Sensitivity": 0.7561,
-    "Specificity": 0.7879,
-    "F1": 0.7723
-  },
-  {
-    "Model": "SGDClassifier",
-    "Group": "Base",
-    "Accuracy": 0.7598,
-    "AUC": 0.7936,
-    "Precision": 0.7760,
-    "Sensitivity": 0.7439,
-    "Specificity": 0.7753,
-    "F1": 0.7599
-  },
-  {
-    "Model": "Ridge",
-    "Group": "Base",
-    "Accuracy": 0.7482,
-    "AUC": 0.7801,
-    "Precision": 0.7639,
-    "Sensitivity": 0.7317,
-    "Specificity": 0.7631,
-    "F1": 0.7477
-  },
-  {
-    "Model": "Lasso",
-    "Group": "Base",
-    "Accuracy": 0.7361,
-    "AUC": 0.7659,
-    "Precision": 0.7511,
-    "Sensitivity": 0.7195,
-    "Specificity": 0.7502,
-    "F1": 0.7353
-  },
-  {
-    "Model": "ElasticNet",
-    "Group": "Base",
-    "Accuracy": 0.7248,
-    "AUC": 0.7524,
-    "Precision": 0.7389,
-    "Sensitivity": 0.7073,
-    "Specificity": 0.7378,
-    "F1": 0.7231
+{
+  "best_model_name": "GradientBoosting",
+  "n_features": 16,
+  "feature_names": [
+    "MDVP:Fo(Hz)",
+    "MDVP:Fhi(Hz)",
+    "MDVP:Flo(Hz)",
+    "MDVP:Jitter(%)",
+    "MDVP:Jitter(Abs)",
+    "MDVP:RAP",
+    "MDVP:PPQ",
+    "Jitter:DDP",
+    "MDVP:Shimmer",
+    "MDVP:Shimmer(dB)",
+    "Shimmer:APQ3",
+    "Shimmer:APQ5",
+    "MDVP:APQ",
+    "Shimmer:DDA",
+    "NHR",
+    "HNR"
+  ],
+  "balanced_accuracy_cv": 0.9377,
+  "roc_auc_cv": 0.9816,
+  "accuracy_cv": 0.9158,
+  "final_uci_accuracy": 1.0,
+  "final_uci_balanced_acc": 1.0,
+  "final_roc_auc": 1.0,
+  "optimal_threshold": 0.39,
+  "n_uci_samples": 195,
+  "n_wav_augmentation": 30,
+  "smote_applied": true,
+  "all_model_results": {
+    "GradientBoosting": {
+      "balanced_accuracy": 0.9377,
+      "roc_auc": 0.9816,
+      "accuracy": 0.9158
+    },
+    "RandomForest": {
+      "balanced_accuracy": 0.9162,
+      "roc_auc": 0.9749,
+      "accuracy": 0.8757
+    },
+    "SVM_rbf": {
+      "balanced_accuracy": 0.8301,
+      "roc_auc": 0.9141,
+      "accuracy": 0.7648
+    },
+    "LogisticRegression": {
+      "balanced_accuracy": 0.7276,
+      "roc_auc": 0.8739,
+      "accuracy": 0.7063
+    }
   }
-]
+}
